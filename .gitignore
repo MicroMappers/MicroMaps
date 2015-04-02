@@ -1,0 +1,35 @@
+# Created by .ignore support plugin (hsz.mobi)
+### SublimeText template
+# cache files for sublime text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# workspace files are user-specific
+*.sublime-workspace
+
+# project files should be checked into the repository, unless a significant
+# proportion of contributors will probably not be using SublimeText
+*.sublime-project
+
+# sftp configuration file
+sftp-config.json
+
+
+dist
+.project
+.settings
+*~
+*.diff
+*.patch
+/*.txt
+/*.csv
+/*.html
+.DS_Store
+.sizecache.json
+node_modules
+.idea
+.sass-cache/
+.tmp/
+.grunt
+
