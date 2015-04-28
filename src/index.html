@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>sidebar-v2 example</title>
+    <TITLE>MicroMaps - Realtime Crisis Mapping</TITLE>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/toastr.min.css" rel="stylesheet">
+    <link href="css/leaflet.css" rel="stylesheet">
     <!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.ie.css" /><![endif]-->
 
     <link rel="stylesheet" href="css/sidebar.css" />
@@ -16,72 +18,82 @@
 
 <header>
 
-<div id="logo"><img src="images/MicroMappers-Logo.png"> </div>
-<div class="social-logos">
+<div id="logo"><a href="/"> <img src="images/MicroMappers-Logo.png"> </a> </div>
+<div class="social-logos" title="Spread the Word!">
     <a href="#fb"> <i class="fa fa-facebook-square"></i> </a>
     <a href="#fb"> <i class="fa fa-twitter"></i> </a>
     <a href="#fb"> <i class="fa fa-google-plus"></i> </a>
 </div>
 
 <div class="info pull-right">
-    <i class="fa fa-question-circle"></i>
+    <a href="#about" title="More about MicroMaps"> <i class="fa fa-question-circle"></i> </a>
 </div>
 
 <div class="search-bar pull-right">
-    <input name="search" id="search" type="text">
+    <input name="search" id="search" type="text" placeholder="Search Crisis" autocomplete="on" onfocus="this.value='';">
     <span class="fa fa-search srchspan"></span>
 </div>
 
 
 </header>
 
-<div class="content">
+<div class="container">
 
     <div id="sidebar" class="sidebar collapsed">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
-            <li><a href="#text" role="tab"><i class="mm mm-text"></i></a></li>
-            <li><a href="#image" role="tab"><i class="fa fa-image"></i></a></li>
-            <li><a href="#video" role="tab"><i class="fa fa-video-camera"></i></a></li>
-            <li><a href="#globe" role="tab"><i class="fa fa-globe"></i></a></li>
-            <li><a href="#3w" role="tab"><i class="fa mm-3w"></i></a></li>
+            <li><a href="#text" role="tab" title="Text Clicker"><i class="mm mm-text"></i></a></li>
+            <li><a href="#image" role="tab" title="Image Clicker"><i class="fa fa-image"></i></a></li>
+            <li><a href="#video" role="tab" title="Video Clicker"><i class="fa fa-video-camera"></i></a></li>
+            <li><a href="#aerial" role="tab" title="Aerial Clicker"><i class="fa fa-globe"></i></a></li>
+            <li><a href="#3w" role="tab" title="3W Clicker"><i class="fa mm-3w"></i></a></li>
         </ul>
 
         <!-- Tab panes -->
-        <div class="sidebar-content">
+        <div class="sidebar-container">
             <div class="sidebar-pane" id="text">
                 <div class="sub-header close-sidebar"><h1>Text Clicker <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
-                <div class="content">
-                    <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-                </div>
+                <ul class="content">
+                    <div class="info">
+                        Search and add Crisis to list.
+                    </div>
+                </ul>
             </div>
 
             <div class="sidebar-pane" id="image">
                 <div class="sub-header close-sidebar"><h1>Image Clicker <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
-                <div class="content">
-                    <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-                </div>
+                <ul class="content">
+                    <div class="info">
+                        Search and add Crisis to list.
+                    </div>
+                </ul>
             </div>
 
             <div class="sidebar-pane" id="video">
                 <div class="sub-header close-sidebar"><h1>Video Clicker <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
-                <div class="content">
-                    <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-                </div>
+                <ul class="content">
+                    <div class="info">
+                        Search and add Crisis to list.
+                    </div>
+                </ul>
             </div>
 
-            <div class="sidebar-pane" id="globe">
-                <div class="sub-header close-sidebar"><h1>Satellite Clicker <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
-                <div class="content">
-                    <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-                </div>
+            <div class="sidebar-pane" id="aerial">
+                <div class="sub-header close-sidebar"><h1>Aerial Clicker <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
+                <ul class="content">
+                    <div class="info">
+                        Search and add Crisis to list.
+                    </div>
+                </ul>
             </div>
 
             <div class="sidebar-pane" id="3w">
                 <div class="sub-header close-sidebar"><h1>3W Clicker <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
-                <div class="content">
-                    <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-                </div>
+                <ul class="content">
+                    <div class="info">
+                        Search and add Crisis to list.
+                    </div>
+                </ul>
 
             </div>
         </div>
@@ -90,18 +102,13 @@
     <div id="map" class="sidebar-map"></div>
 </div>
 
-<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+<script src="lib/jquery-1.11.2.min.js"></script>
+<script src="lib/jquery-ui.min.js"></script>
+<script src="lib/toastr.min.js"></script>
+<script src="lib/leaflet.js"></script>
 <script src="js/sidebar.js"></script>
+<script src="js/config.js"></script>
+<script src="js/micromaps.js"></script>
 
-<script>
-    var map = L.map('map');
-    map.setView([51.2, 7], 9);
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: 'Map data &copy; OpenStreetMap contributors'
-    }).addTo(map);
-    var marker = L.marker([51.2, 7]).addTo(map);
-    var sidebar = L.control.sidebar('sidebar').addTo(map);
-</script>
 </body>
 </html>

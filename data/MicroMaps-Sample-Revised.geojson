@@ -1,0 +1,122 @@
+{
+    "type": "FeatureCollection",
+    "features": [{
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [122.27334594726564, 12.587133279610914]
+        },
+        "properties": {
+            "author": "gmanews",
+            "updated": "2014-12-07 23:57:39.0",
+            "tweetID": "541006762527440896",
+            "created": "2014-12-05 23:10:00",
+            "answer": "mild",
+            "tweet": "Coast Guard sa Romblon, naghahanda na rin para sa inaasahang pagtama ng Bagyong #RubyPH. | via @akosiJaysent http://t.co/HLi9rU7Obz",
+            "url": "https://pbs.twimg.com/media/B4IKR9uCIAA83_W.jpg",
+            "distance": 1,
+            "style":{
+                "markerColor": "red",
+                "iconColor": "white"
+            }
+        }
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [122.7312101, 12.750348599999985]
+        },
+        "properties": {
+            "author": "gmanews",
+            "updated": "2014-12-07 23:57:40.0",
+            "tweetID": "541025858115612672",
+            "created": "2014-12-06 00:26:00",
+            "answer": "mild",
+            "tweet": "Basura at buhangin, nagkalat sa Legazpi Boulevard dahil sa lakas ng alon bunsod ng #RubyPH. | via @allangatus @dzbb http://t.co/lYoeQKe8T2",
+            "url": "https://pbs.twimg.com/media/B4Ibrg0CIAA8liP.jpg",
+            "distance": 1,
+            "style":{
+                "markerColor": "green",
+                "iconColor": "black"
+            }
+        }
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [125.0223496191706, 11.110092180085388]
+        },
+        "properties": {
+            "author": "ICVAAsia",
+            "updated": "2014-12-08 21:21:16.0",
+            "tweetID": "541075210338709505",
+            "created": "2014-12-06 03:42:00",
+            "answer": "severe",
+            "tweet": "Tanauan, #Leyte, in central PH abandoned as residents shelter at evacuation centers #Hagupit (AP Photo/Paul Cinco) http://t.co/EdcUoz35LI",
+            "url": "https://pbs.twimg.com/media/B4JJCR3CUAAuBf_.jpg",
+            "distance": 1,
+            "style":{
+                "markerColor": "blue",
+                "iconColor": "white"
+            }
+        }
+    }, {
+        "type": "Feature",
+        "properties": {
+            "author": "mmstansberry",
+            "updated": "2014-12-09 15:19:25.0",
+            "tweetID": "541644154652987393",
+            "created": "2014-12-07 17:23:00",
+            "answer": "mild",
+            "tweet": "Apitong in #Tacloban roads flooded 6 inches to 2 feet. #RubyPH @redcross #intl http://t.co/q2TvyLymHN",
+            "url": "https://pbs.twimg.com/media/B4ROZm9CYAAkiXK.jpg",
+            "distance": 1,
+            "style":{
+                "radius": 8,
+                "fillColor": "#ff7800",
+                "color": "#000",
+                "weight": 1,
+                "opacity": 1,
+                "fillOpacity": 0.8
+            }
+        },
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+                [
+                    [121.728515625, 12.3990239587457],
+                    [121.761474609375, 11.630715737981486],
+                    [121.234130859375, 11.582288159945177],
+                    [121.08581542968751, 11.985591791400083],
+                    [121.728515625, 12.3990239587457]
+                ]
+            ]
+        }
+    }, {
+        "type": "Feature",
+        "properties": {
+            "author": "Federation",
+            "updated": "2014-12-09 15:22:31.0",
+            "tweetID": "541647110605901826",
+            "created": "2014-12-07 17:35:00",
+            "answer": "mild",
+            "tweet": "MT @mmstansberry: Apitong in #Tacloban roads flooded 6 inches to 2 feet. #Hagupit #RubyPH @redcross #intl http://t.co/fOpbP4mFQF",
+            "url": "https://pbs.twimg.com/media/B4ROZm9CYAAkiXK.jpg",
+            "distance": 1,
+            "style":{
+                "color": "#000",
+                "weight": 1,
+                "opacity": 1
+            }
+        },
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [122.8656005859375, 12.275598890561733],
+                [123.0523681640625, 11.743680604654593],
+                [124.0191650390625, 11.356182392375539],
+                [124.1290283203125, 11.431571076012284]
+            ]
+        }
+    }]
+}

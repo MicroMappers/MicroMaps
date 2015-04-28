@@ -18,7 +18,7 @@ L.Control.Sidebar = L.Control.extend({
          if (L.Browser.touch)
              L.DomUtil.addClass(this._sidebar, 'leaflet-touch');
 
-         // Find sidebar > ul.sidebar-tabs and sidebar > div.sidebar-content
+         // Find sidebar > ul.sidebar-tabs and sidebar > div.sidebar-container
          for (i = this._sidebar.children.length - 1; i >= 0; i--) {
              child = this._sidebar.children[i];
              if (child.tagName == 'UL' &&
@@ -26,7 +26,7 @@ L.Control.Sidebar = L.Control.extend({
                  this._tabs = child;
 
              else if (child.tagName == 'DIV' &&
-                      L.DomUtil.hasClass(child, 'sidebar-content'))
+                      L.DomUtil.hasClass(child, 'sidebar-container'))
                  this._container = child;
          }
 
@@ -40,17 +40,16 @@ L.Control.Sidebar = L.Control.extend({
              }
          }
 
-         // Find sidebar > div.sidebar-content > div.sidebar-pane
+         // Find sidebar > div.sidebar-container > div.sidebar-pane
          this._panes = [];
+         var e = this._hasTouchStart ? 'touchstart' : 'click';
          for (i = this._container.children.length - 1; i >= 0; i--) {
              child = this._container.children[i];
-             if (child.tagName == 'DIV' &&
-                 L.DomUtil.hasClass(child, 'sidebar-pane'))
+             if (child.tagName == 'DIV' && L.DomUtil.hasClass(child, 'sidebar-pane'))
                  this._panes.push(child);
          }
 
-         this._hasTouchStart = L.Browser.touch &&
-                               ('ontouchstart' in document.documentElement);
+         this._hasTouchStart = L.Browser.touch && ('ontouchstart' in document.documentElement);
      },
 
      addTo: function (map) {
@@ -135,7 +134,8 @@ L.Control.Sidebar = L.Control.extend({
      },
 
      _onClick: function(e) {
-         if (L.DomUtil.hasClass(this, 'active'))
+         if(e.preventDefault) e.preventDefault(); else e.returnValue = false;
+         if (L.DomUtil.hasClass(this, 'active') || L.DomUtil.hasClass(this, 'close-sidebar'))
              this._sidebar.close();
          else
              this._sidebar.open(this.firstChild.hash.slice(1));
