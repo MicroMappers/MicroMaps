@@ -19,7 +19,14 @@
 		threeWContainer : "#3w .content",
 
 		API : "",
-		datasource : "../../data/"
+		CrisisList: "http://gis.micromappers.org/MMAPI/rest/geo/JSONP/crisis",
+		datasource : "../../data/",
+
+		image: "Image",
+		video: "Video",
+		aerial: "Aerial",
+		text: "Text",
+		threeW: "3w"
 	};
 
 	toastr.options = {
@@ -51,11 +58,11 @@
 	            $.each( items, function( index, item ) {
 	                if ( item.category != currentCategory ) {
 	                	var cat = item.category;
-	                	var icon = (cat == 'text')?'mm mm-text':
-	                				(cat == 'image')?'fa fa-image':
-	                				(cat == 'video')?'fa fa-video-camera':
-	                				(cat == 'aerial')?'fa fa-globe':
-	                				(cat == '3w')?'fa mm-3w':'';
+	                	var icon = (cat == MicroMaps.config.text)?'mm mm-text':
+	                				(cat == MicroMaps.config.image)?'fa fa-image':
+	                				(cat == MicroMaps.config.video)?'fa fa-video-camera':
+	                				(cat == MicroMaps.config.aerial)?'fa fa-globe':
+	                				(cat == MicroMaps.config.threeW)?'fa mm-3w':'';
 	                    ul.append( "<li class='ui-autocomplete-category'> <i class='"+icon+"'></i>" +
 	                    			"<span class='pull-right'> " + cat + " Clicker</span></li>" );
 	                    currentCategory = item.category;
