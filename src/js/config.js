@@ -8,6 +8,10 @@
 			"500" : "500.html",
 			homepage : "index.html"
 		},
+
+		MAP_CENTER: [51.2, 7],
+		MAP_DEFAULT_ZOOM: 2,
+
 		container :	".container",
 		SidebarContainer :	".sidebar-container",
 		SidebarHeader :	".sub-header",
@@ -15,11 +19,10 @@
 		textContainer : "#text .content",
 		imageContainer : "#image .content",
 		videoContainer : "#video .content",
-		aerialContainer : "#text .content",
+		aerialContainer : "#aerial .content",
 		threeWContainer : "#3w .content",
 
-		API : "",
-		CrisisList: "http://gis.micromappers.org/MMAPI/rest/geo/JSONP/crisis",
+		API : "http://ec2-54-148-39-119.us-west-2.compute.amazonaws.com:8080/MMAPI/rest/micromaps/JSONP/",
 		datasource : "../../data/",
 
 		image: "Image",
@@ -56,7 +59,7 @@
 	            var that = this,
 	            currentCategory = "";
 	            $.each( items, function( index, item ) {
-	                if ( item.category != currentCategory ) {
+	                if ( item.category != currentCategory) {
 	                	var cat = item.category;
 	                	var icon = (cat == MicroMaps.config.text)?'mm mm-text':
 	                				(cat == MicroMaps.config.image)?'fa fa-image':
@@ -65,7 +68,7 @@
 	                				(cat == MicroMaps.config.threeW)?'fa mm-3w':'';
 	                    ul.append( "<li class='ui-autocomplete-category'> <i class='"+icon+"'></i>" +
 	                    			"<span class='pull-right'> " + cat + " Clicker</span></li>" );
-	                    currentCategory = item.category;
+	                    currentCategory = cat;
 	                }
 	                that._renderItemData( ul, item );
 	            });
@@ -74,11 +77,13 @@
 	            var newText = String(item.value).replace(
 	                new RegExp(this.term, "gi"),
 	                "<span class='ui-autocomplete-suggestions'>$&</span>");
+	            if (item.status == 'inactive'){
 
-	            return $("<li></li>")
-	                .data("item.autocomplete", item)
-	                .append("<a>" + newText + "</a>")
-	                .appendTo(ul);
+		            return $("<li></li>")
+		                .data("item.autocomplete", item)
+		                .append("<a>" + newText + "</a>")
+		                .appendTo(ul);
+                }
 	        }
 	    });
 	});

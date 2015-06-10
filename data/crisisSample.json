@@ -1,121 +1,162 @@
 [
-    {
-      "name": "Typhoon Hagupit: Type of Message",
-      "created": "2014-12-06 05:05:52",
-      "type": "text",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
+  {
+    "style": {
+      "style": [
+        {
+          "markerColor": "red",
+          "iconUrl": "",
+          "label_code": "urgent_need",
+          "iconColor": "",
+          "label": "Urgent Need"
+        },
+        {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure_damage",
+          "iconColor": "",
+          "label": "Infrastructure Damage"
+        },
+        {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure",
+          "iconColor": "",
+          "label": "Infrastructure"
+        },
+        {
+          "markerColor": "green",
+          "iconUrl": "",
+          "label_code": "response_efforts",
+          "iconColor": "",
+          "label": "Response Efforts"
+        }
+      ],
+      "type": "text"
     },
-    {
-      "name": "Nigeria Elections: Contents of Tweet",
-      "created": "2014-12-06 05:05:52",
-      "type": "text",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
+    "geoJsonLink": "http://aidr-prod.qcri.org/data/trainer//260.json",
+    "kmlLink": "http://aidr-prod.qcri.org/data/trainer//260.kml",
+    "name": "Nepal EarthQuake",
+    "clientAppID": 260,
+    "activationStart": "2015-04-25 07:19:23.0",
+    "type": "Text",
+    "activationEnd": "2015-05-04 07:19:23.0"
+  },
+  {
+    "style": {
+      "markerColor": "orange",
+      "style": [
+        {
+          "color": "#f40000",
+          "drawType": "polygon",
+          "label_code": "polygon",
+          "label": "Fully Destroyed"
+        },
+        {
+          "color": "#f08c09",
+          "drawType": "polygon2",
+          "label_code": "polygon2",
+          "label": "Partially Damaged"
+        },
+        {
+          "color": "#f08c09",
+          "drawType": "polygon3",
+          "label_code": "polygon3",
+          "label": "Little to no damage"
+        }
+      ],
+      "iconUrl": "",
+      "type": "Aerial"
     },
-    {
-      "name": "Cyclone PAM-15: Information provided",
-      "created": "2014-12-06 05:05:52",
-      "type": "text",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
+    "geoJsonLink": "http://aidr-prod.qcri.org/data/trainer//257.json",
+    "kmlLink": "http://aidr-prod.qcri.org/data/trainer//257.kml",
+    "name": "Vanuatu",
+    "clientAppID": 257,
+    "activationStart": "2015-03-15 07:19:23.0",
+    "type": "Aerial",
+    "activationEnd": "2015-03-25 07:19:23.0"
+  },
+  {
+    "style": {
+      "style": [
+        {
+          "markerColor": "red",
+          "iconUrl": "",
+          "label_code": "severe",
+          "iconColor": "",
+          "label": "severe"
+        },
+        {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "mild",
+          "iconColor": "",
+          "label": "mild"
+        }
+      ],
+      "type": "Image"
     },
-    {
-      "name": "HIV Treatment Questions: Message type",
-      "created": "2014-12-06 05:05:52",
-      "type": "text",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
+    "geoJsonLink": "http://aidr-prod.qcri.org/data/trainer//255.json",
+    "kmlLink": "http://aidr-prod.qcri.org/data/trainer//255.kml",
+    "name": "Nepal EarthQuake",
+    "clientAppID": 255,
+    "activationStart": "2015-04-25 07:19:23.0",
+    "type": "Image",
+    "activationEnd": "2015-05-04 07:19:23.0"
+  },
+  {
+    "style": {
+      "markerColor": "orange",
+      "style": [
+        {
+          "color": "#f40000",
+          "drawType": "polygon",
+          "label_code": "polygon",
+          "label": "Infrasture Damage"
+        },
+        {
+          "color": "#f08c09",
+          "drawType": "polygon2",
+          "label_code": "polygon2",
+          "label": "Standing Water"
+        }
+      ],
+      "iconUrl": "",
+      "type": "Aerial"
     },
-    {
-      "name": "American Red Cross v3: American Red Cross3",
-      "created": "2014-12-06 05:05:52",
-      "type": "text",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
+    "geoJsonLink": "http://aidr-prod.qcri.org/data/trainer//256.json",
+    "kmlLink": "http://aidr-prod.qcri.org/data/trainer//256.kml",
+    "name": "Typhoon Ruby",
+    "clientAppID": 256,
+    "activationStart": "2014-12-01 07:19:23.0",
+    "type": "Aerial",
+    "activationEnd": "2014-12-12 07:19:23.0"
+  },
+  {
+    "style": {
+      "markerColor": "orange",
+      "style": [
+        {
+          "color": "#f08c09",
+          "drawType": "polyline",
+          "label_code": "polyline",
+          "label": "The trunk of a healthy coconut tree"
+        },
+        {
+          "color": "#f40000",
+          "drawType": "polyline2",
+          "label_code": "polyline2",
+          "label": "The trunk of a destroyed tree"
+        }
+      ],
+      "iconUrl": "",
+      "type": "Aerial"
     },
-    {
-      "name": "Cyclone PAM-15",
-      "created": "2014-12-06 05:05:52",
-      "type": "text",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
-    },
-    {
-      "name": "HIV Treatment Questions",
-      "created": "2014-12-06 05:05:52",
-      "type": "image",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
-    },
-    {
-      "name": "American Red Cross v3",
-      "created": "2014-12-06 05:05:52",
-      "type": "image",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
-    },
-    {
-      "name": "Earhtquake: NTHU",
-      "created": "2014-12-06 05:05:52",
-      "type": "image",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
-    },
-    {
-      "name": "American Red Cross v3",
-      "created": "2014-12-06 05:05:52",
-      "type": "video",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
-    },
-    {
-      "name": "Earhtquake: NTHU",
-      "created": "2014-12-06 05:05:52",
-      "type": "video",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
-    },
-    {
-      "name": "Cyclone PAM-15",
-      "created": "2014-12-06 05:05:52",
-      "type": "3w",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
-    },
-    {
-      "name": "American Red Cross v3",
-      "created": "2014-12-06 05:05:52",
-      "type": "3w",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
-    },
-    {
-      "name": "Cyclone PAM-15",
-      "created": "2014-12-06 05:05:52",
-      "type": "aerial",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
-    },
-    {
-      "name": "Hagupit",
-      "created": "2014-12-06 05:05:52",
-      "type": "aerial",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
-    },
-    {
-      "name": "Namibia",
-      "created": "2014-12-06 05:05:52",
-      "type": "aerial",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
-    },
-    {
-      "name": "Coconut Tree challenging",
-      "created": "2014-12-06 05:05:52",
-      "type": "aerial",
-      "link": "link_to_get_geojson_of_this_crisis",
-      "status": 0
-    }
+    "geoJsonLink": "http://aidr-prod.qcri.org/data/trainer//254.json",
+    "kmlLink": "http://aidr-prod.qcri.org/data/trainer//254.kml",
+    "name": "Typhoon Ruby - Palm Tree",
+    "clientAppID": 254,
+    "activationStart": "2015-12-15 07:19:23.0",
+    "type": "Aerial",
+    "activationEnd": "2015-12-18 07:19:23.0"
+  }
 ]

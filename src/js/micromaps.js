@@ -76,7 +76,7 @@
 
                 map.addControl(L.control.zoom({position: 'bottomright'}));
 
-                map.setView([51.2, 7], 9);
+                map.setView(MicroMaps.config.MAP_CENTER, MicroMaps.config.MAP_DEFAULT_ZOOM);
 
                 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 18,
@@ -113,10 +113,11 @@
 
             var activeCrisis = {};
             var _crisis = [];
+            var layerLayer = {};
+            var CrisisList = {};
             var map = MicroMaps.maps;
 
             _this.init = function () {
-                $.log("MicroMaps.Crisis Init");
                 _this.load();
                 return this;
             };
@@ -129,24 +130,32 @@
             */
 
             _this.load = function () {
-                $.log("Loading Crisis List");
                 $.ajax({
-                    url: MicroMaps.config.CrisisList,
+                    url: MicroMaps.config.API + "crisis",
+                    //url: "../data/crisisSample.json",
                     dataType: "jsonp",
                     jsonpCallback:"jsonp",
                     success: function(data) {
-                        var cat_data = $.map(data, function(item) {
+                        var sorted = data.sort(function (a, b) {
+                            if (a.type > b.type) { return 1; }
+                            if (a.type < b.type) { return -1; }
+                            return 0;
+                       });
+                        CrisisList = $.map(sorted, function(item) {
+                            var status = (item.status !== undefined) ? item.status : 'inactive';
                             return {
                                 label: item.name,
                                 category: item.type,
-                                /*created: item.created,
-                                desc: item.status*/
+                                status: status,
+                                clientId: item.clientAppID,
+                                otherItem: item
                             };
                         });
                         $("#search").catcomplete({
                             delay: 0,
-                            source: cat_data,
                             minlength:0,
+                            autoFocus:true,
+                            source: CrisisList,
                             select: function (event, selected) {
                                 var newCrisis = selected.item;
                                 MicroMaps.Crisis.add(newCrisis);
@@ -157,39 +166,42 @@
             };
 
             _this.add = function (crisisArr) {
-                $.log(crisisArr);
 
-                $.ajax({
-                    //url: "../data/imageClicker.json",
-                    url: "../data/MicroMaps-Sample-Revised.geojson",
-                    dataType: "json",
-                    success: function(data) {
-                        $.log(data);
-                        var crisisLayer = L.geoJson(data);
+                $.log(CrisisList);
 
-                        map.fitBounds(crisisLayer);
-                        map.addLayer(crisisLayer);
+                var crisisType = crisisArr.category;
+                var crisisID = crisisArr.clientId;
 
-                        var layerLayer = crisisLayer.getLayerId();
-                        var id = L.stamp(layerLayer);
-                        $.log(id);
+                if (crisisArr.status == 'active'){
+                    alert("<b>"+crisisArr.label + "</b> is already added to Crisis Stack.");
+                }else{
 
-                        _crisis[id] = {
-                            id: id,
-                            layer: layerLayer,
-                            name: crisisArr.label,
-                            date: crisisArr.created,
-                            group: crisisArr.category
-                        };
+                    $.ajax({
+                        //url: "../data/" + crisisID + ".json",
+                        url: MicroMaps.config.API + crisisType.toLowerCase() + "/id/" + crisisID,
+                        dataType: "jsonp",
+                        jsonpCallback:"jsonp",
+                        success: function(data) {
+                            
+                            var crisisLayer = L.geoJson(data);
+                            
+                            $.log(crisisLayer);
 
-                        $.log(_crisis);
+                            var id = L.stamp(crisisLayer);
 
-                        _this._createItem(_crisis[id]);
+                            layerLayer[id] = crisisLayer;
 
-                        toastr.info("Successfully Added Crisis to map <br> <b>" + crisisArr.label + "<b>");
+                            _crisis[id] = crisisArr;
+                            _crisis[id]['layerid'] = id;
 
-                    }
-                });
+                            _this._createItem(_crisis[id]);
+
+                            toastr.info("Successfully Added <b>" + crisisArr.label + "<b> to <b>" + crisisArr.category + " </b> ");
+
+                        }
+                    });
+                    
+                }
 
             };
 
@@ -212,49 +224,66 @@
             };
 
             _this._createItem = function (item) {
+                $.log("Adding new Crisis to list.");
+
                 var className = 'leaflet-layers';
                 var newItem, input, label, checked;
 
+                $.log(item);
 
-                input = '<input type="radio" id="'+item.id+'" name="'+item.group+'" value="'+item.id+'">';
-                input += '<label for="'+item.id+'"><div class="layerInfo">'+
-                            '<div class="layerName">' + item.name + '</div><div class="layerDate">' + item.date + '</div>'+
+                input = '<input type="radio" id="'+item.layerid+'" name="'+item.category+'" value="'+item.layerid+'">';
+                input += '<label for="'+item.layerid+'"><div class="layerInfo">'+
+                            '<div class="layerName">' + item.label + '</div>'+
+                            '<div class="layerDate">Start Date: ' + item.otherItem.activationStart + ' <br>End Date: ' + item.otherItem.activationEnd + '</div>'+
                             '</div><div><i title="Download Crisis" class="fa fa-download"></i><i class="fa fa-cross"></i>'+
                             '</div></label>';
+                
+                $.log(item.category);
 
-                if(item.group == MicroMaps.config.text){
-                    checked = ($(MicroMaps.config.textContainer).find("input").length == 0)  ? true : false;
+                if(item.category === MicroMaps.config.text){
+                    checked = ($(MicroMaps.config.textContainer).find("input").length === 0)  ? true : false;
                     $(MicroMaps.config.textContainer + ' .info').css({'display':'none'});
 
                     $(input).appendTo(MicroMaps.config.textContainer);
 
-                }else if(item.group == MicroMaps.config.image){
-                    checked = ($(MicroMaps.config.imageContainer).find("input").length == 0)  ? true : false;
+                }else if(item.category === MicroMaps.config.image){
+                    checked = ($(MicroMaps.config.imageContainer).find("input").length === 0)  ? true : false;
                     $(MicroMaps.config.imageContainer + ' .info').css({'display':'none'});
 
                     $(input).appendTo(MicroMaps.config.imageContainer);
 
-                }else if(item.group == MicroMaps.config.video){
-                    checked = ($(MicroMaps.config.videoContainer).find("input").length == 0)  ? true : false;
+                }else if(item.category === MicroMaps.config.video){
+                    checked = ($(MicroMaps.config.videoContainer).find("input").length === 0)  ? true : false;
                     $(MicroMaps.config.videoContainer + ' .info').css({'display':'none'});
 
                     $(input).appendTo(MicroMaps.config.videoContainer);
 
-                }else if(item.group == MicroMaps.config.aerial){
-                    checked = ($(MicroMaps.config.aerialContainer).find("input").length == 0)  ? true : false;
+                }else if(item.category === MicroMaps.config.aerial){
+                    checked = ($(MicroMaps.config.aerialContainer).find("input").length === 0)  ? true : false;
                     $(MicroMaps.config.aerialContainer + ' .info').css({'display':'none'});
 
                     $(input).appendTo(MicroMaps.config.aerialContainer);
 
-                }else if(item.group == MicroMaps.config.threeW){
-                    checked = ($(MicroMaps.config.threeWContainer).find("input").length == 0)  ? true : false;
+                }else if(item.category === MicroMaps.config.threeW){
+                    checked = ($(MicroMaps.config.threeWContainer).find("input").length === 0)  ? true : false;
                     $(MicroMaps.config.threeWContainer + ' .info').css({'display':'none'});
 
                     $(input).appendTo(MicroMaps.config.threeWContainer);
 
                 }
-                $.log(checked);
-                $('#'+item.id).attr('checked', checked);
+                
+                /*$.each(CrisisList, function( i, val){
+                    if (item.clientId == val.clientId){
+                        CrisisList[i]['status'] = "active";
+                        $.log(CrisisList[i]);
+                    }
+                });*/
+                if (checked) { 
+                    var layer = layerLayer[item.layerid];
+                    map.addLayer(layer);
+                    map.fitBounds(layer);
+                }
+                $('#'+item.layerid).attr('checked', checked);
             
             };
 
