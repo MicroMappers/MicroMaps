@@ -115,6 +115,7 @@
             var _crisis = [];
             var layerLayer = {};
             var CrisisList = {};
+            var crisisIdMap = {};
             var map = MicroMaps.maps;
 
             _this.init = function () {
@@ -151,6 +152,8 @@
                                 otherItem: item
                             };
                         });
+                        _this.populateMap(CrisisList);
+                        _this.populateCrisis(crisisIdMap);
                         $("#search").catcomplete({
                             delay: 0,
                             minlength:0,
@@ -165,9 +168,90 @@
                 });
             };
 
+            _this.populateMap = function(CrisisList){
+                $.each(CrisisList, function( i, val){
+                  if( crisisIdMap[val.otherItem.crisisID] == null ){
+                    crisisIdMap[val.otherItem.crisisID] = [val];
+                  } else{
+                    crisisIdMap[val.otherItem.crisisID].push(val);
+                  }
+                });
+            }
+
+            _this.getClickerIcon = function(clicker){
+               if(clicker == "Text"){
+                 return "fa fa-file-text-o" ;
+               }else if(clicker == "Image"){
+                 return "fa fa-picture-o" ;
+               }else if(clicker == "Video"){
+                 return "fa fa-video-camera" ;
+               }else if(clicker == "Aerial"){
+                return "fa fa-plane" ;
+               }
+            }
+
+            _this.populateCrisis = function(crisisIdMap){
+
+              var crisisTreeJson = {
+                  "plugins" : ["checkbox"],
+                  'core' : {
+                      "multiple" : false, // no multiselection
+                      "themes" : {
+                        "dots" : false // no connecting dots between dots
+                      },
+                      'data' : []
+                  }
+              };
+
+              var crisisArrJSON = [];
+              $.each(crisisIdMap, function(crisisID, crisisClikcers){
+                  var clickers = [];
+                  $.each(crisisClikcers, function( i, crisisClikcer){
+                    clickers.push({
+                        "text" : crisisClikcer.otherItem.type + " Clicker", "icon" : _this.getClickerIcon(crisisClikcer.otherItem.type),
+                        "crisisID" : crisisClikcer.otherItem.crisisID, "type" : crisisClikcer.otherItem.type
+                    });
+                  });
+                  var clickerJson = {
+                      "text" : crisisClikcers[0].otherItem.crisis,
+                      "icon" : "fa fa-exclamation",
+                      "children" : clickers
+                  }
+                  crisisArrJSON.push(clickerJson);
+              })
+              crisisTreeJson.core.data = crisisArrJSON;
+              $('#crisesView').jstree(crisisTreeJson);
+
+              $('#crisesView').on("changed.jstree", function (e, data) {
+                console.log("Id: " + data.node.original.crisisID);
+                console.log("Type: " + data.node.original.type);
+                var crisisID = 260 //data.node.original.id;
+                $.ajax({
+                    url: "../data/" + crisisID + ".json",
+                    //url: MicroMaps.config.API + "text/id/260",
+                    //dataType: "jsonp",
+                    //jsonpCallback:"jsonp",
+                    success: function(response) {
+                        toastr.info("Data Added to Map.");
+                        var crisisLayer = L.geoJson(response);
+                        map.addLayer(crisisLayer);
+                        map.fitBounds(crisisLayer);
+                    },
+                    error: function(response){
+                      toastr.error("Unable to load data. Try again.");
+                    }
+                });
+
+              });
+
+            }
+
+
             _this.add = function (crisisArr) {
 
                 $.log(CrisisList);
+
+                crisisArr = CrisisList[0];
 
                 var crisisType = crisisArr.category;
                 var crisisID = crisisArr.clientId;
@@ -182,9 +266,9 @@
                         dataType: "jsonp",
                         jsonpCallback:"jsonp",
                         success: function(data) {
-                            
+
                             var crisisLayer = L.geoJson(data);
-                            
+
                             $.log(crisisLayer);
 
                             var id = L.stamp(crisisLayer);
@@ -200,7 +284,7 @@
 
                         }
                     });
-                    
+
                 }
 
             };
@@ -220,7 +304,7 @@
                     return layerDef;
                 else if(layerDef.type && layerDef.args)
                     return this._getPath(L, layerDef.type).apply(window, layerDef.args);
-            
+
             };
 
             _this._createItem = function (item) {
@@ -237,7 +321,7 @@
                             '<div class="layerDate">Start Date: ' + item.otherItem.activationStart + ' <br>End Date: ' + item.otherItem.activationEnd + '</div>'+
                             '</div><div><i title="Download Crisis" class="fa fa-download"></i><i class="fa fa-cross"></i>'+
                             '</div></label>';
-                
+
                 $.log(item.category);
 
                 if(item.category === MicroMaps.config.text){
@@ -271,20 +355,20 @@
                     $(input).appendTo(MicroMaps.config.threeWContainer);
 
                 }
-                
+
                 /*$.each(CrisisList, function( i, val){
                     if (item.clientId == val.clientId){
                         CrisisList[i]['status'] = "active";
                         $.log(CrisisList[i]);
                     }
                 });*/
-                if (checked) { 
+                if (checked) {
                     var layer = layerLayer[item.layerid];
                     map.addLayer(layer);
                     map.fitBounds(layer);
                 }
                 $('#'+item.layerid).attr('checked', checked);
-            
+
             };
 
             return _this.init(); /*initialize the init()*/

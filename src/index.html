@@ -12,6 +12,10 @@
     <!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.ie.css" /><![endif]-->
 
     <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/jstree.min.css" />
+    <style media="screen">
+      .jstree li a ins { display:none !important; }
+    </style>
 
 </head>
 <body>
@@ -42,6 +46,7 @@
     <div id="sidebar" class="sidebar collapsed">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
+            <li><a href="#crises" role="tab" title="Crises"><i class="fa fa-warning"></i></a></li>
             <li><a href="#text" role="tab" title="Text Clicker"><i class="mm mm-text"></i></a></li>
             <li><a href="#image" role="tab" title="Image Clicker"><i class="fa fa-image"></i></a></li>
             <li><a href="#video" role="tab" title="Video Clicker"><i class="fa fa-video-camera"></i></a></li>
@@ -94,8 +99,13 @@
                         Search and add Crisis to list.
                     </div>
                 </ul>
-
             </div>
+
+            <div class="sidebar-pane" id="crises">
+                <div class="sub-header close-sidebar"><h1>Crises <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
+                <div id="crisesView" style="margin-top: 20px"></div>
+            </div>
+
         </div>
     </div>
 
@@ -109,6 +119,7 @@
 <script src="js/sidebar.js"></script>
 <script src="js/config.js"></script>
 <script src="js/micromaps.js"></script>
+<script src="js/jstree.min.js"></script>
 
 </body>
 </html>

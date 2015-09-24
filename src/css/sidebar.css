@@ -250,14 +250,14 @@ input[type=text]:focus, textarea:focus {
 .content .info {
     font-size: 3.5rem;
     line-height: 4rem;
-    text-shadow: 2px 1px 1px #000, -1px -1px 1px #fff;   
-    color: #2F5B64;   
+    text-shadow: 2px 1px 1px #000, -1px -1px 1px #fff;
+    color: #2F5B64;
     opacity: 0.3;
     text-align: center;
 }
 
 .content input[type="radio"] {
-    display:none; 
+    display:none;
 }
 
 .content label {
@@ -273,7 +273,7 @@ input[type=text]:focus, textarea:focus {
     box-shadow: 1px 3px #ccc;
 }
 
-.content input[type="radio"]:checked + label { 
+.content input[type="radio"]:checked + label {
     background-color: #eee;
     padding: 4px 11px;
     /* border: 2px solid #ccc; */

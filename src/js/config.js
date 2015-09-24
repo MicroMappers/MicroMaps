@@ -70,7 +70,7 @@
 	                    			"<span class='pull-right'> " + cat + " Clicker</span></li>" );
 	                    currentCategory = cat;
 	                }
-	                that._renderItemData( ul, item );
+	                that._renderItem( ul, item );
 	            });
 	        },
 	        _renderItem: function( ul, item ) {
