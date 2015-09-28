@@ -22,7 +22,8 @@
 		aerialContainer : "#aerial .content",
 		threeWContainer : "#3w .content",
 
-		API : "http://ec2-54-148-39-119.us-west-2.compute.amazonaws.com:8080/MMAPI/rest/micromaps/JSONP/",
+		//API : "http://ec2-54-148-39-119.us-west-2.compute.amazonaws.com:8080/MMAPI/rest/micromaps/JSONP/",
+		API : "http://localhost:8080/MMAPI/rest/micromaps/JSONP/",		
 		datasource : "../../data/",
 
 		image: "Image",

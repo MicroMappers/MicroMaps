@@ -92,6 +92,10 @@
                 map.addLayer(layer);
             };
 
+            _this.removeLayer = function (layer) {
+                map.removeLayer(layer);
+            };
+
             _this.fitBounds = function (layer) {
                 map.fitBounds(layer);
             };
@@ -170,10 +174,10 @@
 
             _this.populateMap = function(CrisisList){
                 $.each(CrisisList, function( i, val){
-                  if( crisisIdMap[val.otherItem.crisisID] == null ){
-                    crisisIdMap[val.otherItem.crisisID] = [val];
+                  if( crisisIdMap[val.label] == null ){
+                    crisisIdMap[val.label] = [val];
                   } else{
-                    crisisIdMap[val.otherItem.crisisID].push(val);
+                    crisisIdMap[val.label].push(val);
                   }
                 });
             }
@@ -193,9 +197,9 @@
             _this.populateCrisis = function(crisisIdMap){
 
               var crisisTreeJson = {
-                  "plugins" : ["checkbox"],
+                  "plugins" : ["checkbox", "sort"],
                   'core' : {
-                      "multiple" : false, // no multiselection
+                      "multiple" : true, // no multiselection
                       "themes" : {
                         "dots" : false // no connecting dots between dots
                       },
@@ -204,16 +208,28 @@
               };
 
               var crisisArrJSON = [];
-              $.each(crisisIdMap, function(crisisID, crisisClikcers){
+              $.each(crisisIdMap, function(crisisName, crisisClikcers){
                   var clickers = [];
                   $.each(crisisClikcers, function( i, crisisClikcer){
-                    clickers.push({
+                    var clicker = {
                         "text" : crisisClikcer.otherItem.type + " Clicker", "icon" : _this.getClickerIcon(crisisClikcer.otherItem.type),
-                        "crisisID" : crisisClikcer.otherItem.crisisID, "type" : crisisClikcer.otherItem.type
+                        "crisisID" : crisisClikcer.otherItem.crisisID, "type" : crisisClikcer.otherItem.type, "clientId" : crisisClikcer.clientId
+                    };
+
+                    var labels = [];
+                    $.each(crisisClikcer.otherItem.style.style, function( i, style){
+                      var label = {
+                          "text" : style.label, "markerColor" : style.markerColor,
+                          "icon" : "fa fa-bolt",
+                          "labelCode" : style.label_code
+                      }
+                      labels.push(label);
                     });
+                    clicker.children = labels;
+                    clickers.push(clicker);
                   });
                   var clickerJson = {
-                      "text" : crisisClikcers[0].otherItem.crisis,
+                      "text" : crisisClikcers[0].label,
                       "icon" : "fa fa-exclamation",
                       "children" : clickers
                   }
@@ -223,25 +239,39 @@
               $('#crisesView').jstree(crisisTreeJson);
 
               $('#crisesView').on("changed.jstree", function (e, data) {
-                console.log("Id: " + data.node.original.crisisID);
-                console.log("Type: " + data.node.original.type);
-                var crisisID = 260 //data.node.original.id;
-                $.ajax({
-                    url: "../data/" + crisisID + ".json",
-                    //url: MicroMaps.config.API + "text/id/260",
-                    //dataType: "jsonp",
-                    //jsonpCallback:"jsonp",
-                    success: function(response) {
-                        toastr.info("Data Added to Map.");
-                        var crisisLayer = L.geoJson(response);
-                        map.addLayer(crisisLayer);
-                        map.fitBounds(crisisLayer);
-                    },
-                    error: function(response){
-                      toastr.error("Unable to load data. Try again.");
-                    }
-                });
 
+                if(data.node.original.layerId == null){
+                  var clientId = data.node.original.clientId;
+                  var crisisType = data.node.original.type
+                  $.ajax({
+                      //url: "../data/" + crisisID + ".json",
+                      url: MicroMaps.config.API + crisisType.toLowerCase() + "/id/" + clientId,
+                      dataType: "jsonp",
+                      jsonpCallback:"jsonp",
+                      success: function(response) {
+                          toastr.info("Data Added to Map.");
+                          var crisisLayer = L.geoJson(response);
+
+                          var id = L.stamp(crisisLayer);
+                          layerLayer[id] = crisisLayer;
+                          data.node.original.layerId = id;
+
+                          map.addLayer(crisisLayer);
+                          map.fitBounds(crisisLayer);
+                      },
+                      error: function(response){
+                        toastr.error("Unable to load data. Try again.");
+                      }
+                  });
+                } else {
+                  if (data.selected.length == 0){
+                    var crisisLayer = layerLayer[data.node.original.layerId];
+                    map.removeLayer(crisisLayer);
+                  } else {
+                    var crisisLayer = layerLayer[data.node.original.layerId];
+                    map.addLayer(crisisLayer);
+                  }
+                }
               });
 
             }
