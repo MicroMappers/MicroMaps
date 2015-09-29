@@ -119,7 +119,8 @@
             var _crisis = [];
             var layerLayer = {};
             var CrisisList = {};
-            var crisisIdMap = {};
+            var crisisNameMap = {};
+            var crisisTreeMap = {};
             var map = MicroMaps.maps;
 
             _this.init = function () {
@@ -157,7 +158,7 @@
                             };
                         });
                         _this.populateMap(CrisisList);
-                        _this.populateCrisis(crisisIdMap);
+                        _this.populateCrisis(crisisNameMap);
                         $("#search").catcomplete({
                             delay: 0,
                             minlength:0,
@@ -174,10 +175,10 @@
 
             _this.populateMap = function(CrisisList){
                 $.each(CrisisList, function( i, val){
-                  if( crisisIdMap[val.label] == null ){
-                    crisisIdMap[val.label] = [val];
+                  if( crisisNameMap[val.label] == null ){
+                    crisisNameMap[val.label] = [val];
                   } else{
-                    crisisIdMap[val.label].push(val);
+                    crisisNameMap[val.label].push(val);
                   }
                 });
             }
@@ -194,7 +195,7 @@
                }
             }
 
-            _this.populateCrisis = function(crisisIdMap){
+            _this.populateCrisis = function(crisisNameMap){
 
               var crisisTreeJson = {
                   "plugins" : ["checkbox", "sort"],
@@ -208,20 +209,27 @@
               };
 
               var crisisArrJSON = [];
-              $.each(crisisIdMap, function(crisisName, crisisClikcers){
+              $.each(crisisNameMap, function(crisisName, crisisClickers){
                   var clickers = [];
-                  $.each(crisisClikcers, function( i, crisisClikcer){
+                  $.each(crisisClickers, function( i, crisisClicker){
                     var clicker = {
-                        "text" : crisisClikcer.otherItem.type + " Clicker", "icon" : _this.getClickerIcon(crisisClikcer.otherItem.type),
-                        "crisisID" : crisisClikcer.otherItem.crisisID, "type" : crisisClikcer.otherItem.type, "clientId" : crisisClikcer.clientId
+                        "text" : crisisClicker.otherItem.type + " Clicker", "icon" : _this.getClickerIcon(crisisClicker.otherItem.type),
+                        "crisisID" : crisisClicker.otherItem.crisisID, "type" : crisisClicker.otherItem.type, "clientId" : crisisClicker.clientId,
+                        "level" : "clicker", "crisisName" : crisisClicker.label,
                     };
 
                     var labels = [];
-                    $.each(crisisClikcer.otherItem.style.style, function( i, style){
+                    $.each(crisisClicker.otherItem.style.style, function( i, style){
                       var label = {
-                          "text" : style.label, "markerColor" : style.markerColor,
+                          "text" : style.label,
+                          "markerColor" : style.markerColor,
                           "icon" : "fa fa-bolt",
-                          "labelCode" : style.label_code
+                          "labelCode" : style.label_code,
+                          "crisisID" : crisisClicker.otherItem.crisisID,
+                          "type" : crisisClicker.otherItem.type,
+                          "clientId" : crisisClicker.clientId,
+                          "crisisName" : crisisClicker.label,
+                          "level" : "label"
                       }
                       labels.push(label);
                     });
@@ -229,8 +237,9 @@
                     clickers.push(clicker);
                   });
                   var clickerJson = {
-                      "text" : crisisClikcers[0].label,
+                      "text" : crisisClickers[0].label,
                       "icon" : "fa fa-exclamation",
+                      "level" : "crisis",
                       "children" : clickers
                   }
                   crisisArrJSON.push(clickerJson);
@@ -239,43 +248,92 @@
               $('#crisesView').jstree(crisisTreeJson);
 
               $('#crisesView').on("changed.jstree", function (e, data) {
+                var clientId = data.node.original.clientId;
+                var crisisType = data.node.original.type;
+                var nodeLevel = data.node.original.level;
+                var crisisName = data.node.original.crisisName;
+                var labelCode = data.node.original.labelCode;
 
-                if(data.node.original.layerId == null){
-                  var clientId = data.node.original.clientId;
-                  var crisisType = data.node.original.type
+                if(nodeLevel == "crisis"){
+                } else if(nodeLevel == "clicker"){
+                  _this.loadLayer(data, crisisType, clientId, labelCode, crisisName);
+                } else if(nodeLevel == "label"){
+                  _this.loadLayer(data, crisisType, clientId, labelCode, crisisName);
+                }
+              });
+
+            }
+
+            _this.loadLayer = function(data, crisisType, clientId, labelCode, crisisName){
+                if(crisisTreeMap[crisisName] == null || crisisTreeMap[crisisName][clientId] == null){
                   $.ajax({
                       //url: "../data/" + crisisID + ".json",
+                      //url: "../data/" +  "aman.json",
                       url: MicroMaps.config.API + crisisType.toLowerCase() + "/id/" + clientId,
                       dataType: "jsonp",
                       jsonpCallback:"jsonp",
                       success: function(response) {
                           toastr.info("Data Added to Map.");
-                          var crisisLayer = L.geoJson(response);
 
-                          var id = L.stamp(crisisLayer);
-                          layerLayer[id] = crisisLayer;
-                          data.node.original.layerId = id;
+                          var geoJsonMap = {};
 
-                          map.addLayer(crisisLayer);
-                          map.fitBounds(crisisLayer);
+                          $.each(response.features, function( i, feature){
+                            if(geoJsonMap[feature.properties.category] == null){
+                              geoJsonMap[feature.properties.category] = [];
+                            }
+                            geoJsonMap[feature.properties.category].push(feature);
+                          });
+
+                          $.each(geoJsonMap, function(category, features){
+                            var geoJson = { "type" : "FeatureCollection", "features" : features};
+                            crisisLayer = L.geoJson(geoJson);
+
+                            if( crisisTreeMap[crisisName] == null ){
+                              crisisTreeMap[crisisName] = {};
+                            }
+                            if( crisisTreeMap[crisisName][clientId] == null){
+                              crisisTreeMap[crisisName][clientId] = {};
+                            }
+                            if( crisisTreeMap[crisisName][clientId][category] == null){
+                              crisisTreeMap[crisisName][clientId][category] = { "crisisLayer" : crisisLayer };
+                            }
+                            if(labelCode == null || (labelCode != null && labelCode == category) ) {
+                              map.addLayer(crisisLayer);
+                              map.fitBounds(crisisLayer);
+                            }
+                          });
                       },
                       error: function(response){
                         toastr.error("Unable to load data. Try again.");
                       }
                   });
                 } else {
-                  if (data.selected.length == 0){
-                    var crisisLayer = layerLayer[data.node.original.layerId];
-                    map.removeLayer(crisisLayer);
+                  if ( data.selected.indexOf(data.node.id) < 0){
+                    if(labelCode != null){
+                      var crisisLayer = crisisTreeMap[crisisName][clientId][labelCode].crisisLayer
+                      map.removeLayer(crisisLayer);
+                    } else {
+                      var crisisLayers = crisisTreeMap[crisisName][clientId]
+                      $.each(crisisLayers, function(labelCode, data){
+                        map.removeLayer(data.crisisLayer);
+                      });
+                    }
                   } else {
-                    var crisisLayer = layerLayer[data.node.original.layerId];
-                    map.addLayer(crisisLayer);
+                    toastr.info("Data Added to Map.");
+                    if(labelCode != null){
+                      var crisisLayer = crisisTreeMap[crisisName][clientId][labelCode].crisisLayer
+                      map.addLayer(crisisLayer);
+                      map.fitBounds(crisisLayer);
+                    } else {
+                      var crisisLayers = crisisTreeMap[crisisName][clientId]
+                      $.each(crisisLayers, function(labelCode, data){
+                        map.addLayer(data.crisisLayer);
+                        map.fitBounds(data.crisisLayer);
+                      });
+                    }
                   }
                 }
-              });
-
             }
-
 
             _this.add = function (crisisArr) {
 
