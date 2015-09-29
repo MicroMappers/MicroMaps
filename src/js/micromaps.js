@@ -119,7 +119,7 @@
             var _crisis = [];
             var layerLayer = {};
             var CrisisList = {};
-            var crisisNameMap = {};
+            var crisisIdMap = {};
             var crisisTreeMap = {};
             var map = MicroMaps.maps;
 
@@ -158,7 +158,7 @@
                             };
                         });
                         _this.populateMap(CrisisList);
-                        _this.populateCrisis(crisisNameMap);
+                        _this.populateCrisis(crisisIdMap);
                         $("#search").catcomplete({
                             delay: 0,
                             minlength:0,
@@ -175,10 +175,10 @@
 
             _this.populateMap = function(CrisisList){
                 $.each(CrisisList, function( i, val){
-                  if( crisisNameMap[val.label] == null ){
-                    crisisNameMap[val.label] = [val];
+                  if( crisisIdMap[val.otherItem.crisisID] == null ){
+                    crisisIdMap[val.otherItem.crisisID] = [val];
                   } else{
-                    crisisNameMap[val.label].push(val);
+                    crisisIdMap[val.otherItem.crisisID].push(val);
                   }
                 });
             }
@@ -195,7 +195,7 @@
                }
             }
 
-            _this.populateCrisis = function(crisisNameMap){
+            _this.populateCrisis = function(crisisIdMap){
 
               var crisisTreeJson = {
                   "plugins" : ["checkbox", "sort"],
@@ -209,13 +209,13 @@
               };
 
               var crisisArrJSON = [];
-              $.each(crisisNameMap, function(crisisName, crisisClickers){
+              $.each(crisisIdMap, function(crisisID, crisisClickers){
                   var clickers = [];
                   $.each(crisisClickers, function( i, crisisClicker){
                     var clicker = {
                         "text" : crisisClicker.otherItem.type + " Clicker", "icon" : _this.getClickerIcon(crisisClicker.otherItem.type),
                         "crisisID" : crisisClicker.otherItem.crisisID, "type" : crisisClicker.otherItem.type, "clientId" : crisisClicker.clientId,
-                        "level" : "clicker", "crisisName" : crisisClicker.label,
+                        "level" : "clicker"
                     };
 
                     var labels = [];
@@ -228,7 +228,6 @@
                           "crisisID" : crisisClicker.otherItem.crisisID,
                           "type" : crisisClicker.otherItem.type,
                           "clientId" : crisisClicker.clientId,
-                          "crisisName" : crisisClicker.label,
                           "level" : "label"
                       }
                       labels.push(label);
@@ -251,21 +250,21 @@
                 var clientId = data.node.original.clientId;
                 var crisisType = data.node.original.type;
                 var nodeLevel = data.node.original.level;
-                var crisisName = data.node.original.crisisName;
+                var crisisID = data.node.original.crisisID;
                 var labelCode = data.node.original.labelCode;
 
                 if(nodeLevel == "crisis"){
                 } else if(nodeLevel == "clicker"){
-                  _this.loadLayer(data, crisisType, clientId, labelCode, crisisName);
+                  _this.loadLayer(data, crisisType, clientId, labelCode, crisisID);
                 } else if(nodeLevel == "label"){
-                  _this.loadLayer(data, crisisType, clientId, labelCode, crisisName);
+                  _this.loadLayer(data, crisisType, clientId, labelCode, crisisID);
                 }
               });
 
             }
 
-            _this.loadLayer = function(data, crisisType, clientId, labelCode, crisisName){
-                if(crisisTreeMap[crisisName] == null || crisisTreeMap[crisisName][clientId] == null){
+            _this.loadLayer = function(data, crisisType, clientId, labelCode, crisisID){
+                if(crisisTreeMap[crisisID] == null || crisisTreeMap[crisisID][clientId] == null){
                   $.ajax({
                       //url: "../data/" + crisisID + ".json",
                       //url: "../data/" +  "aman.json",
@@ -288,14 +287,14 @@
                             var geoJson = { "type" : "FeatureCollection", "features" : features};
                             crisisLayer = L.geoJson(geoJson);
 
-                            if( crisisTreeMap[crisisName] == null ){
-                              crisisTreeMap[crisisName] = {};
+                            if( crisisTreeMap[crisisID] == null ){
+                              crisisTreeMap[crisisID] = {};
                             }
-                            if( crisisTreeMap[crisisName][clientId] == null){
-                              crisisTreeMap[crisisName][clientId] = {};
+                            if( crisisTreeMap[crisisID][clientId] == null){
+                              crisisTreeMap[crisisID][clientId] = {};
                             }
-                            if( crisisTreeMap[crisisName][clientId][category] == null){
-                              crisisTreeMap[crisisName][clientId][category] = { "crisisLayer" : crisisLayer };
+                            if( crisisTreeMap[crisisID][clientId][category] == null){
+                              crisisTreeMap[crisisID][clientId][category] = { "crisisLayer" : crisisLayer };
                             }
                             if(labelCode == null || (labelCode != null && labelCode == category) ) {
                               map.addLayer(crisisLayer);
@@ -310,10 +309,10 @@
                 } else {
                   if ( data.selected.indexOf(data.node.id) < 0){
                     if(labelCode != null){
-                      var crisisLayer = crisisTreeMap[crisisName][clientId][labelCode].crisisLayer
+                      var crisisLayer = crisisTreeMap[crisisID][clientId][labelCode].crisisLayer
                       map.removeLayer(crisisLayer);
                     } else {
-                      var crisisLayers = crisisTreeMap[crisisName][clientId]
+                      var crisisLayers = crisisTreeMap[crisisID][clientId]
                       $.each(crisisLayers, function(labelCode, data){
                         map.removeLayer(data.crisisLayer);
                       });
@@ -321,11 +320,11 @@
                   } else {
                     toastr.info("Data Added to Map.");
                     if(labelCode != null){
-                      var crisisLayer = crisisTreeMap[crisisName][clientId][labelCode].crisisLayer
+                      var crisisLayer = crisisTreeMap[crisisID][clientId][labelCode].crisisLayer
                       map.addLayer(crisisLayer);
                       map.fitBounds(crisisLayer);
                     } else {
-                      var crisisLayers = crisisTreeMap[crisisName][clientId]
+                      var crisisLayers = crisisTreeMap[crisisID][clientId]
                       $.each(crisisLayers, function(labelCode, data){
                         map.addLayer(data.crisisLayer);
                         map.fitBounds(data.crisisLayer);
