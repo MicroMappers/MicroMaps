@@ -83,6 +83,8 @@
                     attribution: 'MicroMappers'
                 }).addTo(map);
 
+                //L.marker([51.5, -0.09], L.Icon({ markerColor: 'red'})).addTo(map);
+
                 sidebar = L.control.sidebar('sidebar').addTo(map);
 
                 MicroMaps.map = map;
@@ -136,6 +138,7 @@
             */
 
             _this.load = function () {
+                $('#loading-widget').show();
                 $.ajax({
                     url: MicroMaps.config.API + "crisis",
                     //url: "../data/crisisSample.json",
@@ -169,6 +172,7 @@
                                 MicroMaps.Crisis.add(newCrisis);
                             }
                         });
+                        $('#loading-widget').hide();
                     }
                 });
             };
@@ -239,6 +243,7 @@
                       "text" : crisisClickers[0].label,
                       "icon" : "fa fa-exclamation",
                       "level" : "crisis",
+                      "crisisID" : crisisClickers[0].otherItem.crisisID,
                       "children" : clickers
                   }
                   crisisArrJSON.push(clickerJson);
@@ -254,6 +259,10 @@
                 var labelCode = data.node.original.labelCode;
 
                 if(nodeLevel == "crisis"){
+                  var crisisClickers = crisisIdMap[crisisID];
+                  $.each(crisisClickers, function( i, crisisClicker){
+                    _this.loadLayer(data, crisisClicker.otherItem.type, crisisClicker.clientId, labelCode, crisisID);
+                  });
                 } else if(nodeLevel == "clicker"){
                   _this.loadLayer(data, crisisType, clientId, labelCode, crisisID);
                 } else if(nodeLevel == "label"){
@@ -264,10 +273,10 @@
             }
 
             _this.loadLayer = function(data, crisisType, clientId, labelCode, crisisID){
-                if(crisisTreeMap[crisisID] == null || crisisTreeMap[crisisID][clientId] == null){
+                if(data.selected.indexOf(data.node.id) >= 0 && (crisisTreeMap[crisisID] == null || crisisTreeMap[crisisID][clientId] == null)){
+                  $('#loading-widget').show();
                   $.ajax({
                       //url: "../data/" + crisisID + ".json",
-                      //url: "../data/" +  "aman.json",
                       url: MicroMaps.config.API + crisisType.toLowerCase() + "/id/" + clientId,
                       dataType: "jsonp",
                       jsonpCallback:"jsonp",
@@ -301,9 +310,11 @@
                               map.fitBounds(crisisLayer);
                             }
                           });
+                          $('#loading-widget').hide();
                       },
                       error: function(response){
                         toastr.error("Unable to load data. Try again.");
+                        $('#loading-widget').hide();
                       }
                   });
                 } else {
