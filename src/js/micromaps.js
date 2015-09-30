@@ -83,8 +83,6 @@
                     attribution: 'MicroMappers'
                 }).addTo(map);
 
-                //L.marker([51.5, -0.09], L.Icon({ markerColor: 'red'})).addTo(map);
-
                 sidebar = L.control.sidebar('sidebar').addTo(map);
 
                 MicroMaps.map = map;
@@ -296,6 +294,27 @@
                             var geoJson = { "type" : "FeatureCollection", "features" : features};
                             crisisLayer = L.geoJson(geoJson);
 
+                            var redMarker = L.AwesomeMarkers.icon({
+                              icon: 'coffee',
+                              prefix: 'fa',
+                              markerColor: 'red'
+                            });
+
+                            crisisLayer = L.geoJson(geoJson, {
+                                style: function (feature) {
+                                    return {icon: redMarker};
+                                },
+                                onEachFeature: function (feature, layer) {
+                                    layer.bindPopup("Binded");
+                                    layer.setIcon(L.AwesomeMarkers.icon({
+                                      icon: _this.getIconByType(feature.properties.crisis_type),
+                                      prefix: 'fa',
+                                      markerColor: feature.properties.style.markerColor
+                                    }));
+                                }
+                            });//.addTo(map);
+
+
                             if( crisisTreeMap[crisisID] == null ){
                               crisisTreeMap[crisisID] = {};
                             }
@@ -344,7 +363,17 @@
                   }
                 }
             }
-
+            _this.getIconByType = function (crisis_type) {
+              if(crisis_type.toLowerCase() == "text"){
+                return "text-width";
+              } else if(crisis_type.toLowerCase() == "image"){
+                return "file-image-o";
+              } else if(crisis_type.toLowerCase() == "video"){
+                return "video-camera";
+              } else if(crisis_type.toLowerCase() == "aerial"){
+                return "plane";
+              }
+            }
             _this.add = function (crisisArr) {
 
                 $.log(CrisisList);
