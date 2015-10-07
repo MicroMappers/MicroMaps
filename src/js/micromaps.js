@@ -137,12 +137,19 @@
 
             _this.load = function () {
                 $('#loading-widget').show();
+                $("#image-modal").click(function() {
+                   $("#image-modal").hide();
+                   $(".zoomContainer").remove();
+                });
+
                 $.ajax({
                     url: MicroMaps.config.API + "crisis",
                     //url: "../data/crisisSample.json",
                     dataType: "jsonp",
                     jsonpCallback:"jsonp",
                     success: function(data) {
+
+
                         var sorted = data.sort(function (a, b) {
                             if (a.type > b.type) { return 1; }
                             if (a.type < b.type) { return -1; }
@@ -160,16 +167,26 @@
                         });
                         _this.populateMap(CrisisList);
                         _this.populateCrisis(crisisIdMap);
-                        $("#search").catcomplete({
-                            delay: 0,
-                            minlength:0,
-                            autoFocus:true,
-                            source: CrisisList,
-                            select: function (event, selected) {
-                                var newCrisis = selected.item;
-                                MicroMaps.Crisis.add(newCrisis);
-                            }
+
+                        // $("#search").catcomplete({
+                        //     delay: 0,
+                        //     minlength:0,
+                        //     autoFocus:true,
+                        //     source: CrisisList,
+                        //     select: function (event, selected) {
+                        //         console.log(selected);
+                        //         // var newCrisis = selected.item;
+                        //         // MicroMaps.Crisis.add(newCrisis);
+                        //     }
+                        // });
+
+                        $( "#searchCrisis" ).autocomplete({
+                          source: CrisisList,
+                          select: function( event, ui ) {
+                            $.jstree.reference('#crisesView').check_node('#' + ui.item.otherItem.crisisID);
+                          }
                         });
+
                         $('#loading-widget').hide();
                     }
                 });
@@ -242,6 +259,7 @@
                       "icon" : "fa fa-exclamation",
                       "level" : "crisis",
                       "crisisID" : crisisClickers[0].otherItem.crisisID,
+                      "id" : crisisClickers[0].otherItem.crisisID,
                       "children" : clickers
                   }
                   crisisArrJSON.push(clickerJson);
@@ -270,6 +288,11 @@
 
             }
 
+            _this.replaceURLWithHTMLLinks = function(text) {
+                var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+                return text.replace(exp,"<a target='_blank' href='$1'>$1</a>");
+            }
+
             _this.loadLayer = function(data, crisisType, clientId, labelCode, crisisID){
                 if(data.selected.indexOf(data.node.id) >= 0 && (crisisTreeMap[crisisID] == null || crisisTreeMap[crisisID][clientId] == null)){
                   $('#loading-widget').show();
@@ -294,26 +317,34 @@
                             var geoJson = { "type" : "FeatureCollection", "features" : features};
                             crisisLayer = L.geoJson(geoJson);
 
-                            var redMarker = L.AwesomeMarkers.icon({
-                              icon: 'coffee',
-                              prefix: 'fa',
-                              markerColor: 'red'
-                            });
+
 
                             crisisLayer = L.geoJson(geoJson, {
-                                style: function (feature) {
-                                    return {icon: redMarker};
-                                },
                                 onEachFeature: function (feature, layer) {
-                                    layer.bindPopup("Binded");
+                                    if(crisisType.toLowerCase() == "text" && feature.properties.tweet){
+                                        layer.bindPopup(_this.replaceURLWithHTMLLinks(feature.properties.tweet));
+                                    } else if(crisisType.toLowerCase() == "image" && feature.properties.url){
+                                      layer.on("click", function (e) {
+                                        //alert("yes");
+                                        $("#zoom_image").attr("src", feature.properties.url);
+                                        $("#zoom_image").attr("data-zoom-image", feature.properties.url);
+
+                                        $("#image-modal").show();
+                                        $(".zoomContainer").show();
+
+                                        $("#zoom_image").elevateZoom({ zoomType: "inner", cursor: "crosshair", scrollZoom: true });
+                                        //$(".zoomContainer").hide();
+                                      });
+                                    }
+
+                                    layer.bindLabel(feature.properties.style.label);
                                     layer.setIcon(L.AwesomeMarkers.icon({
                                       icon: _this.getIconByType(feature.properties.crisis_type),
                                       prefix: 'fa',
                                       markerColor: feature.properties.style.markerColor
                                     }));
                                 }
-                            });//.addTo(map);
-
+                            });
 
                             if( crisisTreeMap[crisisID] == null ){
                               crisisTreeMap[crisisID] = {};
