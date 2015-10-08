@@ -179,9 +179,12 @@
                         //         // MicroMaps.Crisis.add(newCrisis);
                         //     }
                         // });
-
+                        var crsisSearchList = [];
+                        $.each(crisisIdMap, function(crisisID, crisisClickers){
+                          crsisSearchList.push(crisisClickers[0]);
+                        });
                         $( "#searchCrisis" ).autocomplete({
-                          source: CrisisList,
+                          source: crsisSearchList,
                           select: function( event, ui ) {
                             $.jstree.reference('#crisesView').check_node('#' + ui.item.otherItem.crisisID);
                           }
@@ -298,9 +301,10 @@
                   $('#loading-widget').show();
                   $.ajax({
                       //url: "../data/" + crisisID + ".json",
-                      url: MicroMaps.config.API + crisisType.toLowerCase() + "/id/" + clientId,
-                      dataType: "jsonp",
-                      jsonpCallback:"jsonp",
+                      url: "../data/" + "aerial.json",
+                      // url: MicroMaps.config.API + crisisType.toLowerCase() + "/id/" + clientId,
+                      // dataType: "jsonp",
+                      // jsonpCallback:"jsonp",
                       success: function(response) {
                           toastr.info("Data Added to Map.");
 
@@ -321,8 +325,11 @@
 
                             crisisLayer = L.geoJson(geoJson, {
                                 onEachFeature: function (feature, layer) {
+                                    var markerColor = "blue";
                                     if(crisisType.toLowerCase() == "text" && feature.properties.tweet){
                                         layer.bindPopup(_this.replaceURLWithHTMLLinks(feature.properties.tweet));
+                                        markerColor = feature.properties.style.markerColor;
+                                        layer.bindLabel(feature.properties.style.label);
                                     } else if(crisisType.toLowerCase() == "image" && feature.properties.url){
                                       layer.on("click", function (e) {
                                         //alert("yes");
@@ -335,13 +342,21 @@
                                         $("#zoom_image").elevateZoom({ zoomType: "inner", cursor: "crosshair", scrollZoom: true });
                                         //$(".zoomContainer").hide();
                                       });
+
+                                      layer.bindLabel(feature.properties.style.label);
+                                      markerColor = feature.properties.style.markerColor;
+                                    } else if(crisisType.toLowerCase() == "aerial"){
+                                      layer.on("click", function (e) {
+                                        _this.renderAerialMap(e, feature);
+                                        window.location.href='#uavOpenModal';
+                                      });
                                     }
 
-                                    layer.bindLabel(feature.properties.style.label);
+
                                     layer.setIcon(L.AwesomeMarkers.icon({
-                                      icon: _this.getIconByType(feature.properties.crisis_type),
+                                      icon: _this.getIconByType(crisisType),
                                       prefix: 'fa',
-                                      markerColor: feature.properties.style.markerColor
+                                      markerColor: markerColor
                                     }));
                                 }
                             });
@@ -405,129 +420,45 @@
                 return "plane";
               }
             }
-            _this.add = function (crisisArr) {
 
-                $.log(CrisisList);
+            _this.renderAerialMap = function(e, feature){
 
-                crisisArr = CrisisList[0];
+                var divIndex = 1;
+                var map_div = $("<div/>", {id:"map_task" + divIndex, 'class': 'span4', 'style':'margin-left:0px'});
+                var map_canvas = $("<div/>", {id: "map_" + divIndex, 'class': 'map_canvas'});
+                map_canvas.css("width", "740px");
+                map_canvas.css("height", "740px");
+                map_div.append(map_canvas);
+                $("#aerialMapContainer").prepend(map_div);
 
-                var crisisType = crisisArr.category;
-                var crisisID = crisisArr.clientId;
+                var currentGeoBoundsArray = eval(feature.properties.bounds);
+                var southWest1 = L.latLng(currentGeoBoundsArray[3],currentGeoBoundsArray[2]),
+                 northEast1 = L.latLng(currentGeoBoundsArray[1],currentGeoBoundsArray[0]),
+                 bounds1 = L.latLngBounds(southWest1, northEast1);
 
-                if (crisisArr.status == 'active'){
-                    alert("<b>"+crisisArr.label + "</b> is already added to Crisis Stack.");
-                }else{
+                var centerPoint1 = bounds1.getCenter();
 
-                    $.ajax({
-                        //url: "../data/" + crisisID + ".json",
-                        url: MicroMaps.config.API + crisisType.toLowerCase() + "/id/" + crisisID,
-                        dataType: "jsonp",
-                        jsonpCallback:"jsonp",
-                        success: function(data) {
+                var selectedMap = L.map("map_" + divIndex,{maxZoom:32, minZoom:14}).setView([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], 21);
+                var imageBounds = [[currentGeoBoundsArray[3], currentGeoBoundsArray[2]], [currentGeoBoundsArray[1], currentGeoBoundsArray[0]]];
 
-                            var crisisLayer = L.geoJson(data);
+                var sImgURL = feature.properties.imgURL.replace('aidr-prod.qcri.org/data/trainer/pam', 'qcricl1linuxvm2.cloudapp.net/data/trainer/pam/pam' );
 
-                            $.log(crisisLayer);
 
-                            var id = L.stamp(crisisLayer);
+                L.imageOverlay(sImgURL, imageBounds).addTo(selectedMap);
 
-                            layerLayer[id] = crisisLayer;
+                L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(selectedMap);
 
-                            _crisis[id] = crisisArr;
-                            _crisis[id]['layerid'] = id;
+                selectedMap.setMaxBounds(imageBounds);
+                var features = feature.properties.features;
+                var aerialGeoJson = { "type" : "FeatureCollection", "features" : features};
 
-                            _this._createItem(_crisis[id]);
-
-                            toastr.info("Successfully Added <b>" + crisisArr.label + "<b> to <b>" + crisisArr.category + " </b> ");
-
-                        }
-                    });
-
-                }
-
-            };
-
-            _this.remove = function (crisisArr) {
-                $.log("removing new Crisis to list. Name : "+crisisArr);
-                toastr.info("removing new Crisis to list. Name : "+crisisArr);
-
-            };
-
-            _this.setActive = function (crisisArr) {
-                $.log("set Crisis as Active. Name : "+crisisArr);
-            };
-
-            _this._instanceLayer = function(layerDef) {
-                if(layerDef instanceof L.Class)
-                    return layerDef;
-                else if(layerDef.type && layerDef.args)
-                    return this._getPath(L, layerDef.type).apply(window, layerDef.args);
-
-            };
-
-            _this._createItem = function (item) {
-                $.log("Adding new Crisis to list.");
-
-                var className = 'leaflet-layers';
-                var newItem, input, label, checked;
-
-                $.log(item);
-
-                input = '<input type="radio" id="'+item.layerid+'" name="'+item.category+'" value="'+item.layerid+'">';
-                input += '<label for="'+item.layerid+'"><div class="layerInfo">'+
-                            '<div class="layerName">' + item.label + '</div>'+
-                            '<div class="layerDate">Start Date: ' + item.otherItem.activationStart + ' <br>End Date: ' + item.otherItem.activationEnd + '</div>'+
-                            '</div><div><i title="Download Crisis" class="fa fa-download"></i><i class="fa fa-cross"></i>'+
-                            '</div></label>';
-
-                $.log(item.category);
-
-                if(item.category === MicroMaps.config.text){
-                    checked = ($(MicroMaps.config.textContainer).find("input").length === 0)  ? true : false;
-                    $(MicroMaps.config.textContainer + ' .info').css({'display':'none'});
-
-                    $(input).appendTo(MicroMaps.config.textContainer);
-
-                }else if(item.category === MicroMaps.config.image){
-                    checked = ($(MicroMaps.config.imageContainer).find("input").length === 0)  ? true : false;
-                    $(MicroMaps.config.imageContainer + ' .info').css({'display':'none'});
-
-                    $(input).appendTo(MicroMaps.config.imageContainer);
-
-                }else if(item.category === MicroMaps.config.video){
-                    checked = ($(MicroMaps.config.videoContainer).find("input").length === 0)  ? true : false;
-                    $(MicroMaps.config.videoContainer + ' .info').css({'display':'none'});
-
-                    $(input).appendTo(MicroMaps.config.videoContainer);
-
-                }else if(item.category === MicroMaps.config.aerial){
-                    checked = ($(MicroMaps.config.aerialContainer).find("input").length === 0)  ? true : false;
-                    $(MicroMaps.config.aerialContainer + ' .info').css({'display':'none'});
-
-                    $(input).appendTo(MicroMaps.config.aerialContainer);
-
-                }else if(item.category === MicroMaps.config.threeW){
-                    checked = ($(MicroMaps.config.threeWContainer).find("input").length === 0)  ? true : false;
-                    $(MicroMaps.config.threeWContainer + ' .info').css({'display':'none'});
-
-                    $(input).appendTo(MicroMaps.config.threeWContainer);
-
-                }
-
-                /*$.each(CrisisList, function( i, val){
-                    if (item.clientId == val.clientId){
-                        CrisisList[i]['status'] = "active";
-                        $.log(CrisisList[i]);
+                L.geoJson(aerialGeoJson, {
+                    onEachFeature: function (feature, layer) {
                     }
-                });*/
-                if (checked) {
-                    var layer = layerLayer[item.layerid];
-                    map.addLayer(layer);
-                    map.fitBounds(layer);
-                }
-                $('#'+item.layerid).attr('checked', checked);
-
-            };
+                }).addTo(selectedMap);
+            }
 
             return _this.init(); /*initialize the init()*/
         }
