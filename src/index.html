@@ -41,9 +41,6 @@
 </div>
 
 <div class="search-bar pull-right">
-    <!-- <input name="search" id="search" type="text" placeholder="Search Crisis" autocomplete="on" onfocus="this.value='';">
-    <span class="fa fa-search srchspan"></span> -->
-
     <input id="searchCrisis" type="text" placeholder="Search Crisis" onfocus="this.value='';">
     <span class="fa fa-search srchspan"></span>
 </div>
@@ -57,65 +54,14 @@
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
             <li class="active"><a href="#crises" role="tab" title="Crises"><i class="fa fa-warning"></i></a></li>
-            <!-- <li><a href="#text" role="tab" title="Text Clicker"><i class="mm mm-text"></i></a></li>
-            <li><a href="#image" role="tab" title="Image Clicker"><i class="fa fa-image"></i></a></li>
-            <li><a href="#video" role="tab" title="Video Clicker"><i class="fa fa-video-camera"></i></a></li>
-            <li><a href="#aerial" role="tab" title="Aerial Clicker"><i class="fa fa-globe"></i></a></li>
-            <li><a href="#3w" role="tab" title="3W Clicker"><i class="fa mm-3w"></i></a></li> -->
         </ul>
 
         <!-- Tab panes -->
         <div class="sidebar-container">
-            <!-- <div class="sidebar-pane" id="text">
-                <div class="sub-header close-sidebar"><h1>Text Clicker <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
-                <ul class="content">
-                    <div class="info">
-                        Search and add Crisis to list.
-                    </div>
-                </ul>
-            </div>
-
-            <div class="sidebar-pane" id="image">
-                <div class="sub-header close-sidebar"><h1>Image Clicker <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
-                <ul class="content">
-                    <div class="info">
-                        Search and add Crisis to list.
-                    </div>
-                </ul>
-            </div>
-
-            <div class="sidebar-pane" id="video">
-                <div class="sub-header close-sidebar"><h1>Video Clicker <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
-                <ul class="content">
-                    <div class="info">
-                        Search and add Crisis to list.
-                    </div>
-                </ul>
-            </div>
-
-            <div class="sidebar-pane" id="aerial">
-                <div class="sub-header close-sidebar"><h1>Aerial Clicker <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
-                <ul class="content">
-                    <div class="info">
-                        Search and add Crisis to list.
-                    </div>
-                </ul>
-            </div>
-
-            <div class="sidebar-pane" id="3w">
-                <div class="sub-header close-sidebar"><h1>3W Clicker <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
-                <ul class="content">
-                    <div class="info">
-                        Search and add Crisis to list.
-                    </div>
-                </ul>
-            </div> -->
-
-            <div class="sidebar-pane active" id="crises">
-                <div class="sub-header close-sidebar"><h1>Crises <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
-                <div id="crisesView" style="margin-top: 20px"></div>
-            </div>
-
+          <div class="sidebar-pane active" id="crises">
+              <div class="sub-header close-sidebar"><h1>Crises <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
+              <div id="crisesView" style="margin-top: 20px"></div>
+          </div>
         </div>
     </div>
 
@@ -124,10 +70,6 @@
     <div id="image-modal" class="modal-dialog" >
         <img id="zoom_image" class="image-clicker" data-zoom-image="" src="" />
         <iframe id="videoClicker" class="image-clicker" frameborder="0" style="display: none"></iframe>
-        <!-- <div id="uavVideo1" style="width: 700px; height: 520px; overflow: auto">
-        	<iframe id="uavVideo" name="uavVideo" width="680" height="500" frameborder="0" style="display: none"></iframe>
-					<img id="diasterImg" src="" width="680" height="500" />
-				</div>   -->
     </div>
 
     <div id="video-modal" class="modalDialog">
@@ -143,8 +85,6 @@
         <div id="aerialMapContainer"></div>
       </div>
     </div>
-    <!-- http://www.elevateweb.co.uk/image-zoom -->
-    <!-- http://www.jacklmoore.com/zoom/ -->
 </div>
 
 <script src="lib/jquery-1.11.2.min.js"></script>
@@ -154,7 +94,6 @@
 <script src="lib/jstree.min.js"></script>
 <script src="lib/leaflet.awesome-markers.min.js"></script>
 <script src="lib/leaflet.label.js"></script>
-<!-- <script src="lib/jquery.elevateZoom-3.0.8.min.js"></script> -->
 <script src="lib/jquery.elevatezoom.js"></script>
 
 <script src="js/sidebar.js"></script>

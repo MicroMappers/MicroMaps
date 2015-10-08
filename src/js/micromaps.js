@@ -168,17 +168,6 @@
                         _this.populateMap(CrisisList);
                         _this.populateCrisis(crisisIdMap);
 
-                        // $("#search").catcomplete({
-                        //     delay: 0,
-                        //     minlength:0,
-                        //     autoFocus:true,
-                        //     source: CrisisList,
-                        //     select: function (event, selected) {
-                        //         console.log(selected);
-                        //         // var newCrisis = selected.item;
-                        //         // MicroMaps.Crisis.add(newCrisis);
-                        //     }
-                        // });
                         var crsisSearchList = [];
                         $.each(crisisIdMap, function(crisisID, crisisClickers){
                           crsisSearchList.push(crisisClickers[0]);
@@ -220,15 +209,28 @@
             _this.populateCrisis = function(crisisIdMap){
 
               var crisisTreeJson = {
-                  "plugins" : ["checkbox", "sort"],
+                  "plugins" : ["checkbox", "sort", "contextmenu"],
                   'core' : {
+                      "check_callback": true,
                       "multiple" : true, // no multiselection
                       "themes" : {
                         "dots" : false // no connecting dots between dots
                       },
                       'data' : []
+                  },
+                  "contextmenu": {
+                      "items": {
+                          "geojson": {
+                              "label": "Download Geojson",
+                              "icon" : "fa fa-download"
+                          },
+                          "kml": {
+                              "label": "Download KML",
+                              "icon" : "fa fa-download"
+                          }
+                      }
                   }
-              };
+              }
 
               var crisisArrJSON = [];
               $.each(crisisIdMap, function(crisisID, crisisClickers){
@@ -269,6 +271,14 @@
               })
               crisisTreeJson.core.data = crisisArrJSON;
               $('#crisesView').jstree(crisisTreeJson);
+
+               $('#crisesView').on("show_contextmenu.jstree", function (e, node, x, y) {
+                 if(node.node.original.level == "clicker"){
+
+                 } else {
+                    $(".jstree-default-contextmenu").remove();
+                 }
+              });
 
               $('#crisesView').on("changed.jstree", function (e, data) {
                 var clientId = data.node.original.clientId;

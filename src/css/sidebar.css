@@ -117,6 +117,9 @@ input[type=text]:focus, textarea:focus {
     z-index: 200;
     background: #EAEAEA;
 }
+.jstree-default-contextmenu{
+  z-index: 200;
+}
 .sidebar.collapsed {
     width: 50px;
     top: 70px;
@@ -476,7 +479,7 @@ li.ui-autocomplete-category {
 
 .video-div {
     width: 700px;
-    height: 520px;    
+    height: 520px;
     position: relative;
     margin: 2% auto;
     padding: 5px 5px 5px 5px;
