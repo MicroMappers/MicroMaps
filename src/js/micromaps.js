@@ -299,12 +299,14 @@
             _this.loadLayer = function(data, crisisType, clientId, labelCode, crisisID){
                 if(data.selected.indexOf(data.node.id) >= 0 && (crisisTreeMap[crisisID] == null || crisisTreeMap[crisisID][clientId] == null)){
                   $('#loading-widget').show();
+
+                  var API = crisisType.toLowerCase() == "video" ? MicroMaps.config.API.replace("JSONP", "file") : MicroMaps.config.API;
                   $.ajax({
                       //url: "../data/" + crisisID + ".json",
-                      url: "../data/" + "aerial.json",
-                      // url: MicroMaps.config.API + crisisType.toLowerCase() + "/id/" + clientId,
-                      // dataType: "jsonp",
-                      // jsonpCallback:"jsonp",
+                      //url: "../data/" + "aerial.json",
+                      url: API + crisisType.toLowerCase() + "/id/" + clientId,
+                      dataType: "jsonp",
+                      jsonpCallback:"jsonp",
                       success: function(response) {
                           toastr.info("Data Added to Map.");
 
@@ -345,10 +347,20 @@
 
                                       layer.bindLabel(feature.properties.style.label);
                                       markerColor = feature.properties.style.markerColor;
+                                    } else if(crisisType.toLowerCase() == "video"){
+                                      layer.on("click", function (e) {
+
+                                        console.log(_this.getEmbedUrl(feature.properties.url));
+                                        $("#uavVideo").attr('src', _this.getEmbedUrl(feature.properties.url));
+                                        window.location.href='#video-modal';
+                                      });
+
+                                      layer.bindLabel(feature.properties.style.label);
+                                      markerColor = feature.properties.style.markerColor;
                                     } else if(crisisType.toLowerCase() == "aerial"){
                                       layer.on("click", function (e) {
                                         _this.renderAerialMap(e, feature);
-                                        window.location.href='#uavOpenModal';
+                                        window.location.href='#aerial-modal';
                                       });
                                     }
 
@@ -419,6 +431,17 @@
               } else if(crisis_type.toLowerCase() == "aerial"){
                 return "plane";
               }
+            }
+
+            _this.getEmbedUrl = function(origUrl) {
+                if (origUrl.match(/youtube/)) {
+                    var vid = origUrl.match(/v=([^&]+)/)[1];
+                    return "http://www.youtube.com/embed/" + vid + "?autoplay=1&showinfo=1&controls=1";
+                } else if (origUrl.match(/vimeo/)) {
+                    var vid = origUrl.substr(17);
+                    return "http://player.vimeo.com/video/" + vid;
+                }
+                return origUrl;
             }
 
             _this.renderAerialMap = function(e, feature){

@@ -474,7 +474,20 @@ li.ui-autocomplete-category {
     pointer-events: auto;
 }
 
-.modalDialog > div {
+.video-div {
+    width: 700px;
+    height: 520px;    
+    position: relative;
+    margin: 2% auto;
+    padding: 5px 5px 5px 5px;
+    border-radius: 0px;
+    background: #fff;
+    background: -moz-linear-gradient(#fff, #999);
+    background: -webkit-linear-gradient(#fff, #999);
+    background: -o-linear-gradient(#fff, #999);
+}
+
+.aerial-div {
     width: 750px;
     height: 750px;
     position: relative;

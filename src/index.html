@@ -120,13 +120,26 @@
     </div>
 
     <div id="map" class="sidebar-map"></div>
-    <div class="modal-dialog" id="image-modal">
+
+    <div id="image-modal" class="modal-dialog" >
         <img id="zoom_image" class="image-clicker" data-zoom-image="" src="" />
+        <iframe id="videoClicker" class="image-clicker" frameborder="0" style="display: none"></iframe>
+        <!-- <div id="uavVideo1" style="width: 700px; height: 520px; overflow: auto">
+        	<iframe id="uavVideo" name="uavVideo" width="680" height="500" frameborder="0" style="display: none"></iframe>
+					<img id="diasterImg" src="" width="680" height="500" />
+				</div>   -->
     </div>
 
-    <div id="uavOpenModal" class="modalDialog">
-    	<div>
-    		<a href="#close" title="close" class="close" id="videoClose">X</a>
+    <div id="video-modal" class="modalDialog">
+			<div class="video-div">
+        <a href="#close" title="close" class="close" onclick="$('#uavVideo').attr('src', '');">X</a>
+      	<iframe id="uavVideo" name="uavVideo" width="700px" height="520px" frameborder="0"></iframe>
+			</div>
+    </div>
+
+    <div id="aerial-modal" class="modalDialog">
+    	<div class="aerial-div">
+    		<a href="#close" title="close" class="close">X</a>
         <div id="aerialMapContainer"></div>
       </div>
     </div>
