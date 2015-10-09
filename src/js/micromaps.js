@@ -121,6 +121,7 @@
             var CrisisList = {};
             var crisisIdMap = {};
             var crisisTreeMap = {};
+            var downloadNode;
             var map = MicroMaps.maps;
 
             _this.init = function () {
@@ -206,6 +207,26 @@
                }
             }
 
+            _this.downloadGeoJson = function(node){
+                $('#loading-widget').show();
+                var API = node.type.toLowerCase() == "video" ? MicroMaps.config.API.replace("JSONP", "file") : MicroMaps.config.API;
+                $.ajax({
+                    url: API + node.type.toLowerCase() + "/id/" + node.clientId,
+                    dataType: "jsonp",
+                    jsonpCallback:"jsonp",
+                    success: function(response) {
+                      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(response));
+                    	 $('#downloadBtn').attr("href", dataStr);
+                    	 $('#downloadBtn').attr("download", "geojson.json");
+                       $("#downloadBtn")[0].click()
+                       $('#loading-widget').hide();
+                    },
+                    error: function(response){
+                      $('#loading-widget').hide();
+                    }
+                });
+            }
+
             _this.populateCrisis = function(crisisIdMap){
 
               var crisisTreeJson = {
@@ -222,7 +243,10 @@
                       "items": {
                           "geojson": {
                               "label": "Download Geojson",
-                              "icon" : "fa fa-download"
+                              "icon" : "fa fa-download",
+                              "action" : function(obj){
+                                _this.downloadGeoJson(_this.downloadNode);
+                              }
                           },
                           "kml": {
                               "label": "Download KML",
@@ -239,7 +263,7 @@
                     var clicker = {
                         "text" : crisisClicker.otherItem.type + " Clicker", "icon" : _this.getClickerIcon(crisisClicker.otherItem.type),
                         "crisisID" : crisisClicker.otherItem.crisisID, "type" : crisisClicker.otherItem.type, "clientId" : crisisClicker.clientId,
-                        "level" : "clicker"
+                        "level" : "clicker", "id" : crisisClicker.clientId
                     };
 
                     var labels = [];
@@ -274,7 +298,7 @@
 
                $('#crisesView').on("show_contextmenu.jstree", function (e, node, x, y) {
                  if(node.node.original.level == "clicker"){
-
+                   _this.downloadNode = node.node.original;
                  } else {
                     $(".jstree-default-contextmenu").remove();
                  }
@@ -455,7 +479,7 @@
             }
 
             _this.renderAerialMap = function(e, feature){
-
+                $('#map_task1').remove();
                 var divIndex = 1;
                 var map_div = $("<div/>", {id:"map_task" + divIndex, 'class': 'span4', 'style':'margin-left:0px'});
                 var map_canvas = $("<div/>", {id: "map_" + divIndex, 'class': 'map_canvas'});
