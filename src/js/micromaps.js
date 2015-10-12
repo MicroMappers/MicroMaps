@@ -227,6 +227,31 @@
                 });
             }
 
+            _this.downloadKML = function(node){
+                $('#loading-widget').show();
+                var API = MicroMaps.config.API.replace("JSONP", "kml")
+                $.ajax({
+                    url: API + node.type.toLowerCase() + "/id/" + node.clientId,
+                    dataType: "xml",
+                    success: function(response) {
+                      var dataStr = "data:Application/octet-stream," + encodeURIComponent(new XMLSerializer().serializeToString(response));
+                       $('#downloadBtn').attr("href", dataStr);
+                       $('#downloadBtn').attr("download", "clicker.kml");
+                       $("#downloadBtn")[0].click();
+                       $('#loading-widget').hide();
+                    },
+                    error: function(errorMessage){
+                      if(errorMessage.status == 200){
+                        var dataStr = "data:Application/octet-stream," + encodeURIComponent(errorMessage.responseText);
+                         $('#downloadBtn').attr("href", dataStr);
+                         $('#downloadBtn').attr("download", "clicker.kml");
+                         $("#downloadBtn")[0].click();
+                      }
+                      $('#loading-widget').hide();
+                    }
+                });
+            }
+
             _this.populateCrisis = function(crisisIdMap){
 
               var crisisTreeJson = {
@@ -250,7 +275,10 @@
                           },
                           "kml": {
                               "label": "Download KML",
-                              "icon" : "fa fa-download"
+                              "icon" : "fa fa-download",
+                              "action" : function(obj){
+                                _this.downloadKML(_this.downloadNode);
+                              }
                           }
                       }
                   }
