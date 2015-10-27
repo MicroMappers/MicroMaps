@@ -380,10 +380,10 @@
                   var API = crisisType.toLowerCase() == "video" ? MicroMaps.config.API.replace("JSONP", "file") : MicroMaps.config.API;
                   $.ajax({
                       //url: "../data/" + crisisID + ".json",
-                      //url: "../data/" + "aerial.json",
-                      url: API + crisisType.toLowerCase() + "/id/" + clientId,
-                      dataType: "jsonp",
-                      jsonpCallback:"jsonp",
+                      url: "../data/" + "newAerial.json",
+                      // url: API + crisisType.toLowerCase() + "/id/" + clientId,
+                      // dataType: "jsonp",
+                      // jsonpCallback:"jsonp",
                       success: function(response) {
                           toastr.info("New locations Added to Map.");
 
