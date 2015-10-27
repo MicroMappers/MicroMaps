@@ -30,21 +30,23 @@
 <header>
 <a id="downloadBtn" href="" style="display: none"> </a>
 <div id="logo"><a href="/"> <img src="images/MicroMappers-Logo.png"> </a> </div>
-<div class="social-logos" title="Spread the Word!">
+<div class="social-logos my-hidden" title="Spread the Word!">
     <a href="#fb"> <i class="fa fa-facebook-square"></i> </a>
     <a href="#fb"> <i class="fa fa-twitter"></i> </a>
     <a href="#fb"> <i class="fa fa-google-plus"></i> </a>
 </div>
 
 <div class="info pull-right">
-    <a href="#about" title="More about MicroMaps"> <i class="fa fa-question-circle"></i> </a>
+    <!-- <a href="#about" title="More about MicroMaps"> <i class="fa fa-question-circle"></i> </a> -->
+
+    <img src="images/qcri_logo.png" >
+    <!-- <img src="images/right-logo.png"> -->
 </div>
 
 <div class="search-bar pull-right">
-    <input id="searchCrisis" type="text" placeholder="Search Crisis" onfocus="this.value='';">
     <span class="fa fa-search srchspan"></span>
+    <input id="searchCrisis" type="text" placeholder="Search Crisis" onfocus="this.value='';">
 </div>
-
 
 </header>
 
@@ -53,14 +55,20 @@
     <div id="sidebar" class="sidebar">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
-            <li class="active"><a href="#crises" role="tab" title="Crises"><i class="fa fa-warning"></i></a></li>
+            <li class="active"><a href="#crises" role="tab" title="Crises"><i class="fa fa-map-marker"></i></a></li>
         </ul>
-
+            <div class="social-logos" title="Spread the Word!">
+            <a href="#fb" class="fb"> <i class="fa fa-facebook"></i> </a>
+            <a href="#fb" class="twitter"> <i class="fa fa-twitter"></i> </a>
+            <a href="#fb" class="gplus"> <i class="fa fa-google-plus"></i> </a>
+            </div>
+            <div class="share-div">
+             <a href="#share" class="share"><i class="fa fa-share-alt"></i></a></div>
         <!-- Tab panes -->
         <div class="sidebar-container">
           <div class="sidebar-pane active" id="crises">
-              <div class="sub-header close-sidebar"><h1>Crises <i class="fa fa-angle-double-left pull-right"> </i></h1></div>
-              <div id="crisesView" style="margin-top: 20px"></div>
+              <div class="sub-header close-sidebar"><h1>Crises </h1><i class="fa fa-times pull-right"> </i></div>
+              <div id="crisesView" class="my-font" style="margin-top: 20px;"></div>
           </div>
         </div>
     </div>
@@ -91,7 +99,8 @@
 <script src="lib/jquery-ui.min.js"></script>
 <script src="lib/toastr.min.js"></script>
 <script src="lib/leaflet.js"></script>
-<script src="lib/jstree.min.js"></script>
+<!-- <script src="lib/jstree.min.js"></script> -->
+<script src="lib/jstree.js"></script>
 <script src="lib/leaflet.awesome-markers.min.js"></script>
 <script src="lib/leaflet.label.js"></script>
 <script src="lib/jquery.elevatezoom.js"></script>
@@ -99,7 +108,17 @@
 <script src="js/sidebar.js"></script>
 <script src="js/config.js"></script>
 <script src="js/micromaps.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".share-div a").click(function(){
 
+            $(".social-logos").toggle();
+        })
+
+
+    })
+
+</script>
 
 </body>
 </html>

@@ -78,6 +78,8 @@
 
                 map.setView(MicroMaps.config.MAP_CENTER, MicroMaps.config.MAP_DEFAULT_ZOOM);
 
+                //map.fitWorld();
+
                 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 18,
                     attribution: 'MicroMappers'
@@ -296,10 +298,23 @@
 
                     var labels = [];
                     $.each(crisisClicker.otherItem.style.style, function( i, style){
+                      if(!style.markerColor){
+                        if(style.color){
+                          style.markerColor = style.color;
+                        }
+                      }
+                      if(style.markerColor && !style.markerColor.startsWith("#")){
+                        style.markerColor = "#" + style.markerColor;
+                      }
+                      var a_attr = { "style" : "color: " + style.markerColor };
+                      if(crisisClicker.otherItem.type.toLowerCase() == "aerial" ){
+                        a_attr = { "style" : "color: " + style.markerColor + "; pointer-events: none; opacity: 0.6"};
+                      }
                       var label = {
                           "text" : style.label,
                           "markerColor" : style.markerColor,
-                          "icon" : "fa fa-bolt",
+                          "icon" : "fa fa-map-marker",
+                          "a_attr": a_attr,
                           "labelCode" : style.label_code,
                           "crisisID" : crisisClicker.otherItem.crisisID,
                           "type" : crisisClicker.otherItem.type,
@@ -370,7 +385,7 @@
                       dataType: "jsonp",
                       jsonpCallback:"jsonp",
                       success: function(response) {
-                          toastr.info("Data Added to Map.");
+                          toastr.info("New locations Added to Map.");
 
                           var geoJsonMap = {};
 
@@ -392,8 +407,10 @@
                                     var markerColor = "blue";
                                     if(crisisType.toLowerCase() == "text" && feature.properties.tweet){
                                         layer.bindPopup(_this.replaceURLWithHTMLLinks(feature.properties.tweet));
-                                        markerColor = feature.properties.style.markerColor;
-                                        layer.bindLabel(feature.properties.style.label);
+                                        if(feature.properties.style){
+                                          markerColor = feature.properties.style.markerColor;
+                                          layer.bindLabel(feature.properties.style.label);
+                                        }
                                     } else if(crisisType.toLowerCase() == "image" && feature.properties.url){
                                       layer.on("click", function (e) {
                                         //alert("yes");
@@ -452,7 +469,7 @@
                           $('#loading-widget').hide();
                       },
                       error: function(response){
-                        toastr.error("Unable to load data. Try again.");
+                        toastr.error("Unable to load map. Try again.");
                         $('#loading-widget').hide();
                       }
                   });
@@ -468,7 +485,7 @@
                       });
                     }
                   } else {
-                    toastr.info("Data Added to Map.");
+                    toastr.info("New locations Added to Map.");
                     if(labelCode != null){
                       var crisisLayer = crisisTreeMap[crisisID][clientId][labelCode].crisisLayer
                       map.addLayer(crisisLayer);
@@ -526,7 +543,8 @@
                 var selectedMap = L.map("map_" + divIndex,{maxZoom:32, minZoom:14}).setView([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], 21);
                 var imageBounds = [[currentGeoBoundsArray[3], currentGeoBoundsArray[2]], [currentGeoBoundsArray[1], currentGeoBoundsArray[0]]];
 
-                var sImgURL = feature.properties.imgURL.replace('aidr-prod.qcri.org/data/trainer/pam', 'qcricl1linuxvm2.cloudapp.net/data/trainer/pam/pam' );
+                //var sImgURL = feature.properties.imgURL.replace('aidr-prod.qcri.org/data/trainer/pam', 'qcricl1linuxvm2.cloudapp.net/data/trainer/pam/pam' );
+                var sImgURL = feature.properties.imgURL.replace('aidr-prod.qcri.org/data/trainer/pam', 'aidr-prod.qcri.org/trainer/pam' );
 
 
                 L.imageOverlay(sImgURL, imageBounds).addTo(selectedMap);

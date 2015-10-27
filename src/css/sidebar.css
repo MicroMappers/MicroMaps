@@ -38,9 +38,12 @@ header a:hover {
 }
 
 div#logo {
-    background: #2F5B64;
+    background-image: url("../images/logo-bg.png");
     padding: 7px 10px;
     vertical-align: top;
+    background-repeat: repeat-x;
+    box-shadow: 2px 2px 2px #AB9B9B;
+    float: left;
 }
 
 #logo img {
@@ -49,16 +52,70 @@ div#logo {
 }
 
 .social-logos {
-    padding: 0 15px;
+    /*padding: 0 15px;*/
     /* line-height: 70px; */
-    margin: 8px 0;
+    margin: 35px 0;
+    position: absolute;;
+    bottom: 0;
+    z-index: 100;
+    width: 48px;
+    background-color: #FFF;
+    left: 5px;
+        box-shadow: 2px 2px 2px #847676;
+        display: none;
 }
 
 .social-logos a {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     text-decoration: none;
     color: #2F5B64;
+    width: 66%;
+    height: 45px;
+    float: left;
+    color: #FFF;
+    margin: 2%;
 }
+.social-logos a.fb{
+    background: #0078e7;
+    padding-left: 30%;
+    padding-top: 10px;
+}
+
+.social-logos a.twitter{
+    background: #3a92c8;
+    padding-left: 20%;
+    width: 75%;
+    padding-top: 10px;
+}
+.social-logos a.gplus{
+    background: #ca3c3c;
+    padding-left: 20%;
+    width: 75%;
+    padding-top: 10px;
+}
+
+.share-div{margin: 5px 0;
+    position: absolute;
+    bottom: 0;
+    z-index: 100;
+    width: 48px;
+    left: 5px;
+ }
+.share-div a.share{
+   background: #b20000;
+    padding-left: 9%;
+    width: 50%;
+    padding-top: 5px;
+    font-size: 1.5rem;
+    height: 25px;
+    border-radius: 5px;
+
+    text-decoration: none;
+     float: left;
+    color: #FFF;
+
+}
+
 
 .pull-right{
     float: right;
@@ -68,6 +125,7 @@ div#logo {
     position: relative;
     margin-left: -25px;
     cursor: pointer;
+    left: 28px;
 }
 
 .info a{
@@ -87,20 +145,36 @@ input#search {
     min-width: 200px;
 }
 
-.search-bar {      line-height: 70px;
-      margin-left: -50px;      width: 20%;      min-width: 255px;}
+.search-bar {
+    line-height: 70px;
+    margin-left: 23px;
+    width: 500px;
+}
 
-
-input[type=text], textarea {
+.search-bar input{
+    width: 464px;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid #C3BBBB;
+    padding: 10px;
+    padding-left: 30px;
+    -moz-transition: all 0.3s ease-in 0s;
+    -webkit-transition: all 0.3s ease-in 0s;
+    -o-transition: all 0.3s ease-in 0s;
+    transition: all 0.3s ease-in 0s;
+}
+/*input[type=text], textarea {
   outline: none;
 }
 
 input[type=text]:focus, textarea:focus {
-  box-shadow: 0 0 5px #2F5B64;
-  padding: 3px 0px 3px 3px;
-  margin: 5px 1px 3px 0px;
-  border: 1px solid #2F5B64;
-}
+
+    -moz-transition: all 0.3s ease-in 0s;
+    -webkit-transition: all 0.3s ease-in 0s;
+    -o-transition: all 0.3s ease-in 0s;
+    transition: all 0.3s ease-in 0s;
+    width: 94%;
+}*/
 
 .container {
     height: calc(100% - 72px);
@@ -145,14 +219,19 @@ input[type=text]:focus, textarea:focus {
     transition: all 80ms;
     padding: 5px 0;
     text-shadow: 1px 0px 5px rgb(108, 107, 107);
+     background-image: url("../images/logo-bg.png");
+     box-shadow: 2px 2px 2px #AB9B9B;
+     color: #FFF;
 }
 .sidebar-tabs > li:hover {
     color: #FFF;
     background-color: #2899FF; }
 .sidebar-tabs > li.active {
     color: #fff;
-    background-color: #0074d9;
+
     text-shadow: 1px 0px 5px rgb(108, 107, 107);
+
+
 }
 .sidebar-tabs > li > a {
     display: block;
@@ -170,7 +249,7 @@ input[type=text]:focus, textarea:focus {
     top: 0;
     bottom: 0;
     background-color: #fff;
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: auto;
     border-left: 1px solid;
     border-top: 1px solid;
@@ -239,11 +318,16 @@ input[type=text]:focus, textarea:focus {
 
 .sub-header h1 {
     margin: 0;
-}
+    color: #FFF;
+    float: left;
+        font-size: 25px;
+    font-weight: 100;
 
+}
+.sub-header i{color: #FFF; margin-top: 8px;}
 .sidebar-pane .sub-header {
     text-align: center;
-    background: #EAEAEA;
+    background-image: url("../images/panel-heading.png");
     padding: 10px 10px;
     box-shadow: 0 1px 2px rgba(0,0,0, 0.50);
     cursor: pointer;
@@ -371,6 +455,10 @@ li.ui-autocomplete-category {
 .sidebar-tabs .mm-text {
     font-size: 3rem !important;
 }
+
+.ui-autocomplete { z-index: 200}
+
+.my-font{font-family: verdana;}
 
 
 /*Media Queries*/
@@ -523,3 +611,4 @@ li.ui-autocomplete-category {
 }
 
 .close:hover { background: #ff2c0c; }
+.my-hidden{display: none;}

@@ -9,7 +9,8 @@
 			homepage : "index.html"
 		},
 
-		MAP_CENTER: [51.2, 7],
+		//MAP_CENTER: [51.2, 7],
+		MAP_CENTER: [0,0],
 		MAP_DEFAULT_ZOOM: 2,
 
 		container :	".container",
