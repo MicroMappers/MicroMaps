@@ -302,10 +302,7 @@
                         if(style.color){
                           style.markerColor = style.color;
                         }
-                      }
-                      if(style.markerColor && !style.markerColor.startsWith("#")){
-                        style.markerColor = "#" + style.markerColor;
-                      }
+                      }                      
                       var a_attr = { "style" : "color: " + style.markerColor };
                       if(crisisClicker.otherItem.type.toLowerCase() == "aerial" ){
                         a_attr = { "style" : "color: " + style.markerColor + "; pointer-events: none; opacity: 0.6"};
@@ -380,10 +377,10 @@
                   var API = crisisType.toLowerCase() == "video" ? MicroMaps.config.API.replace("JSONP", "file") : MicroMaps.config.API;
                   $.ajax({
                       //url: "../data/" + crisisID + ".json",
-                      url: "../data/" + "newAerial.json",
-                      // url: API + crisisType.toLowerCase() + "/id/" + clientId,
-                      // dataType: "jsonp",
-                      // jsonpCallback:"jsonp",
+                      //url: "../data/" + "newAerial.json",
+                      url: API + crisisType.toLowerCase() + "/id/" + clientId,
+                      dataType: "jsonp",
+                      jsonpCallback:"jsonp",
                       success: function(response) {
                           toastr.info("New locations Added to Map.");
 
@@ -533,7 +530,9 @@
                 map_div.append(map_canvas);
                 $("#aerialMapContainer").prepend(map_div);
 
-                var currentGeoBoundsArray = eval(feature.properties.bounds);
+                //var currentGeoBoundsArray = eval(feature.properties.bounds);
+                var currentGeoBoundsArray =  [125.00587463378906, 11.241715102754723, 125.00553131103516, 11.241378366973036];
+
                 var southWest1 = L.latLng(currentGeoBoundsArray[3],currentGeoBoundsArray[2]),
                  northEast1 = L.latLng(currentGeoBoundsArray[1],currentGeoBoundsArray[0]),
                  bounds1 = L.latLngBounds(southWest1, northEast1);
@@ -542,6 +541,8 @@
 
                 var selectedMap = L.map("map_" + divIndex,{maxZoom:32, minZoom:14}).setView([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], 21);
                 var imageBounds = [[currentGeoBoundsArray[3], currentGeoBoundsArray[2]], [currentGeoBoundsArray[1], currentGeoBoundsArray[0]]];
+
+
 
                 //var sImgURL = feature.properties.imgURL.replace('aidr-prod.qcri.org/data/trainer/pam', 'qcricl1linuxvm2.cloudapp.net/data/trainer/pam/pam' );
                 var sImgURL = feature.properties.imgURL.replace('aidr-prod.qcri.org/data/trainer/pam', 'aidr-prod.qcri.org/trainer/pam' );
