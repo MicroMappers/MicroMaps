@@ -44,8 +44,10 @@
 .marker-cluster {
 	background-clip: padding-box;
 	border-radius: 20px;
+	background-color: rgba(241, 211, 87, 0.6);
 	}
 .marker-cluster div {
+	background-color: rgba(241, 211, 87, 0.6);
 	width: 30px;
 	height: 30px;
 	margin-left: 5px;

@@ -93,6 +93,10 @@
                 MicroMaps.map = map;
             };
 
+            _this.defaultView = function (layer) {
+                map.setView(MicroMaps.config.MAP_CENTER, MicroMaps.config.MAP_DEFAULT_ZOOM);
+            };
+
             _this.addLayer = function (layer) {
                 map.addLayer(layer);
             };
@@ -385,10 +389,14 @@
                       dataType: "jsonp",
                       jsonpCallback:"jsonp",
                       success: function(response) {
-                          toastr.info("New locations Added to Map.");
+                          if(response.features.length <= 0){
+                            toastr.warning(crisisType + " clicker locations not Found.");
+                            $('#loading-widget').hide();
+                            return;
+                          }
 
                           var geoJsonMap = {};
-
+                          toastr.info(crisisType + " clicker locations Added to Map.");
                           $.each(response.features, function( i, feature){
                             if(geoJsonMap[feature.properties.category] == null){
                               geoJsonMap[feature.properties.category] = [];
@@ -398,9 +406,9 @@
 
                           $.each(geoJsonMap, function(category, features){
                             var geoJson = { "type" : "FeatureCollection", "features" : features};
-                            crisisLayer = L.geoJson(geoJson);
+                            //crisisLayer = L.geoJson(geoJson);
 
-
+                            var markerClusterGroup = L.markerClusterGroup({animateAddingMarkers: true, maxClusterRadius: 1});
 
                             crisisLayer = L.geoJson(geoJson, {
                                 onEachFeature: function (feature, layer) {
@@ -450,7 +458,7 @@
                                       markerColor: markerColor
                                     }));
 
-                                    MicroMaps.maps.markerClusterGroup.addLayer(layer);
+                                    markerClusterGroup.addLayer(layer);
                                 }
                             });
 
@@ -461,14 +469,13 @@
                               crisisTreeMap[crisisID][clientId] = {};
                             }
                             if( crisisTreeMap[crisisID][clientId][category] == null){
-                              crisisTreeMap[crisisID][clientId][category] = { "crisisLayer" : crisisLayer };
+                              crisisTreeMap[crisisID][clientId][category] = { "crisisLayer" : /*crisisLayer*/ markerClusterGroup };
                             }
                             if(labelCode == null || (labelCode != null && labelCode == category) ) {
-                              map.addLayer(crisisLayer);
-                              map.fitBounds(crisisLayer);
-
-                              // map.addLayer(MicroMaps.maps.markerClusterGroup);
-                              // map.fitBounds(MicroMaps.maps.markerClusterGroup.getBounds());
+                              //map.addLayer(crisisLayer);
+                              //map.fitBounds(crisisLayer);
+                               map.addLayer(markerClusterGroup);
+                               map.fitBounds(markerClusterGroup.getBounds());
                             }
                           });
                           $('#loading-widget').hide();
@@ -484,15 +491,17 @@
                       if(crisisTreeMap[crisisID][clientId][labelCode] != null){
                         var crisisLayer = crisisTreeMap[crisisID][clientId][labelCode].crisisLayer
                         map.removeLayer(crisisLayer);
+                        map.defaultView();
                       }
                     } else {
                       var crisisLayers = crisisTreeMap[crisisID][clientId]
                       $.each(crisisLayers, function(labelCode, data){
                         map.removeLayer(data.crisisLayer);
                       });
+                      map.defaultView();
                     }
                   } else {
-                    toastr.info("New locations Added to Map.");
+                    toastr.info(crisisType + " clicker locations Added to Map.");
                     if(labelCode != null){
                       if(crisisTreeMap[crisisID][clientId][labelCode] != null){
                         var crisisLayer = crisisTreeMap[crisisID][clientId][labelCode].crisisLayer

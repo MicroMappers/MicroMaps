@@ -423,8 +423,8 @@ li.ui-autocomplete-category {
     line-height: 1.5em;
     top: 85px !important;
     right: 20px;
-    box-shadow: 2px 0px 5px rgb(108, 107, 107);
-    text-shadow: 1px 0px 1px rgb(231, 230, 229);
+    //box-shadow: 2px 0px 5px rgb(108, 107, 107);
+    //text-shadow: 1px 0px 1px rgb(231, 230, 229);
 }
 .ui-tooltip {
     border: 1px solid white;
