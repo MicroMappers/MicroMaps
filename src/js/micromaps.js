@@ -35,6 +35,7 @@
              */
             var map, sidebar;
             var selectedCrisis = [];
+            var markerClusterGroup;
 
             /**
              * Public methods and properties
@@ -84,6 +85,8 @@
                     maxZoom: 18,
                     attribution: 'MicroMappers'
                 }).addTo(map);
+
+                _this.markerClusterGroup = L.markerClusterGroup({animateAddingMarkers: true, maxClusterRadius: 1});
 
                 sidebar = L.control.sidebar('sidebar').addTo(map);
 
@@ -302,7 +305,7 @@
                         if(style.color){
                           style.markerColor = style.color;
                         }
-                      }                      
+                      }
                       var a_attr = { "style" : "color: " + style.markerColor };
                       if(crisisClicker.otherItem.type.toLowerCase() == "aerial" ){
                         a_attr = { "style" : "color: " + style.markerColor + "; pointer-events: none; opacity: 0.6"};
@@ -446,6 +449,8 @@
                                       prefix: 'fa',
                                       markerColor: markerColor
                                     }));
+
+                                    MicroMaps.maps.markerClusterGroup.addLayer(layer);
                                 }
                             });
 
@@ -461,6 +466,9 @@
                             if(labelCode == null || (labelCode != null && labelCode == category) ) {
                               map.addLayer(crisisLayer);
                               map.fitBounds(crisisLayer);
+
+                              // map.addLayer(MicroMaps.maps.markerClusterGroup);
+                              // map.fitBounds(MicroMaps.maps.markerClusterGroup.getBounds());
                             }
                           });
                           $('#loading-widget').hide();
@@ -473,8 +481,10 @@
                 } else {
                   if ( data.selected.indexOf(data.node.id) < 0){
                     if(labelCode != null){
-                      var crisisLayer = crisisTreeMap[crisisID][clientId][labelCode].crisisLayer
-                      map.removeLayer(crisisLayer);
+                      if(crisisTreeMap[crisisID][clientId][labelCode] != null){
+                        var crisisLayer = crisisTreeMap[crisisID][clientId][labelCode].crisisLayer
+                        map.removeLayer(crisisLayer);
+                      }
                     } else {
                       var crisisLayers = crisisTreeMap[crisisID][clientId]
                       $.each(crisisLayers, function(labelCode, data){
@@ -484,9 +494,11 @@
                   } else {
                     toastr.info("New locations Added to Map.");
                     if(labelCode != null){
-                      var crisisLayer = crisisTreeMap[crisisID][clientId][labelCode].crisisLayer
-                      map.addLayer(crisisLayer);
-                      map.fitBounds(crisisLayer);
+                      if(crisisTreeMap[crisisID][clientId][labelCode] != null){
+                        var crisisLayer = crisisTreeMap[crisisID][clientId][labelCode].crisisLayer
+                        map.addLayer(crisisLayer);
+                        map.fitBounds(crisisLayer);
+                      }
                     } else {
                       var crisisLayers = crisisTreeMap[crisisID][clientId]
                       $.each(crisisLayers, function(labelCode, data){
@@ -530,8 +542,8 @@
                 map_div.append(map_canvas);
                 $("#aerialMapContainer").prepend(map_div);
 
-                //var currentGeoBoundsArray = eval(feature.properties.bounds);
-                var currentGeoBoundsArray =  [125.00587463378906, 11.241715102754723, 125.00553131103516, 11.241378366973036];
+                var currentGeoBoundsArray = eval(feature.properties.bounds);
+                //var currentGeoBoundsArray =  [125.00587463378906, 11.241715102754723, 125.00553131103516, 11.241378366973036];
 
                 var southWest1 = L.latLng(currentGeoBoundsArray[3],currentGeoBoundsArray[2]),
                  northEast1 = L.latLng(currentGeoBoundsArray[1],currentGeoBoundsArray[0]),
@@ -560,6 +572,15 @@
 
                 L.geoJson(aerialGeoJson, {
                     onEachFeature: function (feature, layer) {
+                    },
+                    style: function(layer) {
+                        if(layer && layer.properties && layer.properties.layerType){
+                          switch (layer.properties.layerType) {
+                              case 'polygon': return {color:"#f00909"};
+                              case 'polygon2': return {color:"#f08c09"};
+                              default:return {color:"#090df0"};
+                          }
+                        }
                     }
                 }).addTo(selectedMap);
             }
