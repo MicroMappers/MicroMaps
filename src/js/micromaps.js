@@ -263,6 +263,17 @@
 
             _this.populateCrisis = function(crisisIdMap){
 
+              var socket = new Pusher('1eb98c94c2976297709d',{
+                encrypted: true
+              });
+              var my_channel = socket.subscribe('channel-one');
+              socket.bind('test_event',
+                function(data) {
+                  console.log(data);
+                  toastr.info("Got Pusher event.");
+                }
+              );
+
               var crisisTreeJson = {
                   "plugins" : ["checkbox", "sort", "contextmenu"],
                   'core' : {
@@ -396,12 +407,19 @@
                           }
 
                           var geoJsonMap = {};
+                          var bounds = eval(crisisIdMap[crisisID][0].otherItem.bounds);// [117.44,4.66,127.34,19.64];
+                          //console.log(bounds);
                           toastr.info(crisisType + " clicker locations Added to Map.");
                           $.each(response.features, function( i, feature){
-                            if(geoJsonMap[feature.properties.category] == null){
-                              geoJsonMap[feature.properties.category] = [];
+                            if(feature != null && feature.properties != null){
+                               if(feature.geometry.coordinates[0] >= bounds[0] && feature.geometry.coordinates[0] <= bounds[2]
+                                 && feature.geometry.coordinates[1] >= bounds[1] && feature.geometry.coordinates[1] <= bounds[3]){
+                                  if(geoJsonMap[feature.properties.category] == null){
+                                    geoJsonMap[feature.properties.category] = [];
+                                  }
+                                  geoJsonMap[feature.properties.category].push(feature);
+                              }
                             }
-                            geoJsonMap[feature.properties.category].push(feature);
                           });
 
                           $.each(geoJsonMap, function(category, features){
@@ -437,7 +455,7 @@
                                     } else if(crisisType.toLowerCase() == "video"){
                                       layer.on("click", function (e) {
 
-                                        console.log(_this.getEmbedUrl(feature.properties.url));
+                                        //console.log(_this.getEmbedUrl(feature.properties.url));
                                         $("#uavVideo").attr('src', _this.getEmbedUrl(feature.properties.url));
                                         window.location.href='#video-modal';
                                       });
