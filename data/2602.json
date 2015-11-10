@@ -1,0 +1,173 @@
+{
+  "features": [
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "infrastructure_damage",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure_damage",
+          "iconColor": "",
+          "label": "Infrastructure Damage"
+        },
+        "taskid": 622075,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "A ‘Wandering’ Journalist Captured ‘Heartbreaking’ Photos Showing Nepal Just Before the Quake — and Right After the… http://t.co/g0d64GXPIr",
+        "tweetid": "591964282654429200",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.5,
+          26.67327749858275
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "infrastructure_damage",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure_damage",
+          "iconColor": "",
+          "label": "Infrastructure Damage"
+        },
+        "taskid": 622135,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "Ancient Hindu temples survive nature's furies for millennia be it Shri Pashupati Nath or Shri Kedarnath. https://t.co/h83K5zyUUT",
+        "tweetid": "591953736315994100",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          86,
+          26.5
+        ]
+      }
+    },       
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "infrastructure_damage",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure_damage",
+          "iconColor": "",
+          "label": "Infrastructure Damage"
+        },
+        "taskid": 622148,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "Dear friends, happy to let you know all of us at animal nepal appear to be well. Our office wall came down and... http://t.co/AN1eNZvkN3",
+        "tweetid": "591954266715074600",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          86.5,
+          26.8
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "urgent_need",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "red",
+          "iconUrl": "",
+          "label_code": "urgent_need",
+          "iconColor": "",
+          "label": "Urgent Need"
+        },
+        "taskid": 635467,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "@SushmaSwaraj Dr. Deepu 23 and his two friends from kozhikkodu, kerala untraceable in Kathmandu since quake. Please help. his no. 9809333922",
+        "tweetid": "591992454728912900",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          87,
+          27
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "urgent_need",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "red",
+          "iconUrl": "",
+          "label_code": "urgent_need",
+          "iconColor": "",
+          "label": "Urgent Need"
+        },
+        "taskid": 635505,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "I'm looking for Pramila Tiwari in Kathmandu- she lives near the University. #NepalEarthquake Please tweet if anyone knows anything.",
+        "tweetid": "591991177605296100",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          87.5,
+          27.2
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "infrastructure_damage",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure_damage",
+          "iconColor": "",
+          "label": "Infrastructure Damage"
+        },
+        "taskid": 635525,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "All those incredible temples in Durbar Square are gone. All those people.",
+        "tweetid": "591996685334679600",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          88,
+          28
+        ]
+      }
+    }
+  ],
+  "type": "FeatureCollection"
+}

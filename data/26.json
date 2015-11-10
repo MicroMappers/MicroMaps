@@ -1,0 +1,341 @@
+{
+  "features": [
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "infrastructure_damage",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure_damage",
+          "iconColor": "",
+          "label": "Infrastructure Damage"
+        },
+        "taskid": 622062,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "?2 RT @cctvnews: Kathmandu’s Patan Durbar Square before and after the #NepalEarthquake http://t.co/L9plLDO9Re",
+        "tweetid": "591957762785042400",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          84.0916787,
+          28.108317800000002
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "infrastructure_damage",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure_damage",
+          "iconColor": "",
+          "label": "Infrastructure Damage"
+        },
+        "taskid": 622062,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "?2 RT @cctvnews: Kathmandu’s Patan Durbar Square before and after the #NepalEarthquake http://t.co/L9plLDO9Re",
+        "tweetid": "591957762785042400",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.32528027012947,
+          27.673239492303928
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "infrastructure_damage",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure_damage",
+          "iconColor": "",
+          "label": "Infrastructure Damage"
+        },
+        "taskid": 622075,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "A ‘Wandering’ Journalist Captured ‘Heartbreaking’ Photos Showing Nepal Just Before the Quake — and Right After the… http://t.co/g0d64GXPIr",
+        "tweetid": "591964282654429200",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.32493694737553,
+          27.67327749858275
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "infrastructure_damage",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure_damage",
+          "iconColor": "",
+          "label": "Infrastructure Damage"
+        },
+        "taskid": 622135,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "Ancient Hindu temples survive nature's furies for millennia be it Shri Pashupati Nath or Shri Kedarnath. https://t.co/h83K5zyUUT",
+        "tweetid": "591953736315994100",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.3148882,
+          27.707676199999998
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "infrastructure_damage",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure_damage",
+          "iconColor": "",
+          "label": "Infrastructure Damage"
+        },
+        "taskid": 622136,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "“@XHNews: Landslide caused by Nepal's M8.1 #earthquake cuts section of China-Nepal highway in Tibet, SW China http://t.co/nLgTG3EFIw”",
+        "tweetid": "591963751621857300",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          89.9999998,
+          32.00000019999999
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "infrastructure_damage",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure_damage",
+          "iconColor": "",
+          "label": "Infrastructure Damage"
+        },
+        "taskid": 622137,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "Landslide caused by Nepal's M8.1 #earthquake cuts section of China-#Nepal highway in Tibet, SW China #earthquake http://t.co/rplyJ813w5",
+        "tweetid": "591959252836712400",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.3148882,
+          27.707676199999998
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "infrastructure_damage",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure_damage",
+          "iconColor": "",
+          "label": "Infrastructure Damage"
+        },
+        "taskid": 622138,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "Landslide caused by Nepal's M8.1 #earthquake cuts section of China-Nepal highway in Tibet, SW China http://t.co/ZpN8ySjASM",
+        "tweetid": "591958752011530200",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          91.1314249,
+          29.656886899999996
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "infrastructure_damage",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure_damage",
+          "iconColor": "",
+          "label": "Infrastructure Damage"
+        },
+        "taskid": 622148,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "Dear friends, happy to let you know all of us at animal nepal appear to be well. Our office wall came down and... http://t.co/AN1eNZvkN3",
+        "tweetid": "591954266715074600",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.32256204275201,
+          27.548011450000004
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "urgent_need",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "red",
+          "iconUrl": "",
+          "label_code": "urgent_need",
+          "iconColor": "",
+          "label": "Urgent Need"
+        },
+        "taskid": 635444,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "4/48 children. At Clifton Beach in Karachi, people were swimming and they were swept by waves. At least 45 bodies have been #Nepal",
+        "tweetid": "592087363439894500",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          67.0311286,
+          24.866779500000007
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "urgent_need",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "red",
+          "iconUrl": "",
+          "label_code": "urgent_need",
+          "iconColor": "",
+          "label": "Urgent Need"
+        },
+        "taskid": 635467,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "@SushmaSwaraj Dr. Deepu 23 and his two friends from kozhikkodu, kerala untraceable in Kathmandu since quake. Please help. his no. 9809333922",
+        "tweetid": "591992454728912900",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.31537945491502,
+          27.707591900000004
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "urgent_need",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "red",
+          "iconUrl": "",
+          "label_code": "urgent_need",
+          "iconColor": "",
+          "label": "Urgent Need"
+        },
+        "taskid": 635505,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "I'm looking for Pramila Tiwari in Kathmandu- she lives near the University. #NepalEarthquake Please tweet if anyone knows anything.",
+        "tweetid": "591991177605296100",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.31537945491502,
+          27.707591900000004
+        ]
+      }
+    },
+    {
+      "properties": {
+        "timestamp": "",
+        "author": "",
+        "category": "infrastructure_damage",
+        "crisis_type": "Text",
+        "style": {
+          "markerColor": "orange",
+          "iconUrl": "",
+          "label_code": "infrastructure_damage",
+          "iconColor": "",
+          "label": "Infrastructure Damage"
+        },
+        "taskid": 635525,
+        "crisis_name": "Nepal EarthQuake",
+        "tweet": "All those incredible temples in Durbar Square are gone. All those people.",
+        "tweetid": "591996685334679600",
+        "url": ""
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.307412554258,
+          27.70435865
+        ]
+      }
+    }
+  ],
+  "type": "FeatureCollection"
+}
