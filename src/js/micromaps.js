@@ -218,35 +218,51 @@
 
             _this.downloadGeoJson = function(node){
                 $('#loading-widget').show();
-                var API = node.type.toLowerCase() == "video" ? MicroMaps.config.API.replace("JSONP", "file") : MicroMaps.config.API;
+                var API = MicroMaps.config.API;
                 $.ajax({
-                    url: API + node.type.toLowerCase() + "/id/" + node.clientId,
+                    url: API + "download/geojson/id/" + node.clientId,
                     dataType: "jsonp",
                     jsonpCallback:"jsonp",
                     success: function(response) {
-
-                      var bounds = eval(crisisIdMap[node.crisisID][0].otherItem.bounds);
-                      var updatedFeatures = [];
-                      $.each(response.features, function( i, feature){
-                        if(feature != null && feature.properties != null){
-                           if(feature.geometry.coordinates[0] >= bounds[0] && feature.geometry.coordinates[0] <= bounds[2]
-                             && feature.geometry.coordinates[1] >= bounds[1] && feature.geometry.coordinates[1] <= bounds[3]){
-                               updatedFeatures.push(feature);
-                          }
-                        }
-                      });
-                      response.features = updatedFeatures;
-
-                      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(response));
-                    	 $('#downloadBtn').attr("href", dataStr);
-                    	 $('#downloadBtn').attr("download", "geojson.json");
-                       $("#downloadBtn")[0].click()
                        $('#loading-widget').hide();
+                       window.open(MicroMaps.config.HOST + response.dwonloadPath);
                     },
                     error: function(response){
                       $('#loading-widget').hide();
                     }
                 });
+
+                return;
+                // $('#loading-widget').show();
+                // var API = node.type.toLowerCase() == "video" ? MicroMaps.config.API.replace("JSONP", "file") : MicroMaps.config.API;
+                // $.ajax({
+                //     url: API + node.type.toLowerCase() + "/id/" + node.clientId,
+                //     dataType: "jsonp",
+                //     jsonpCallback:"jsonp",
+                //     success: function(response) {
+                //
+                //       var bounds = eval(crisisIdMap[node.crisisID][0].otherItem.bounds);
+                //       var updatedFeatures = [];
+                //       $.each(response.features, function( i, feature){
+                //         if(feature != null && feature.properties != null){
+                //            if(feature.geometry.coordinates[0] >= bounds[0] && feature.geometry.coordinates[0] <= bounds[2]
+                //              && feature.geometry.coordinates[1] >= bounds[1] && feature.geometry.coordinates[1] <= bounds[3]){
+                //                updatedFeatures.push(feature);
+                //           }
+                //         }
+                //       });
+                //       response.features = updatedFeatures;
+                //
+                //       var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent("/* QCRI */ \n\n\n\n"+JSON.stringify(response));
+                //     	 $('#downloadBtn').attr("href", dataStr);
+                //     	 $('#downloadBtn').attr("download", "geojson.json");
+                //        $("#downloadBtn")[0].click()
+                //        $('#loading-widget').hide();
+                //     },
+                //     error: function(response){
+                //       $('#loading-widget').hide();
+                //     }
+                // });
             }
 
             _this.downloadKML = function(node){
@@ -278,10 +294,10 @@
 
                   var API = MicroMaps.config.API;
                   $.ajax({
-                      url: "../data/" + "2601.json",
-                      //url: API + "geojson/id/" + clientId + "/createdDate/200", //+ processStartTime,
-                      //dataType: "jsonp",
-                      //jsonpCallback:"jsonp",
+                      //url: "../data/" + "2601.json",
+                      url: API + "geojson/id/" + clientId + "/createdDate/200", //+ processStartTime,
+                      dataType: "jsonp",
+                      jsonpCallback:"jsonp",
                       success: function(response) {
                           if(response.features.length <= 0){
                             return;
@@ -364,10 +380,12 @@
                                     };
                                     layer.options.bounceOnAddCallback = function(a) {
                                       layer.options.bounceOnAdd = false;
+                                      var cc = 0;
                                       markerClusterGroup.eachLayer(function(layer){
-                                        //console.log();
+                                        cc++;
                                         layer.options.bounceOnAdd = false;
                                       });
+                                      console.log(cc);
                                     }
                                     markerClusterGroup.addLayer(layer);
                                 }
@@ -384,6 +402,9 @@
 
                               //map.fitBounds(markerClusterGroup.getBounds());
                               map.addLayer(markerClusterGroup);
+                              var northEast = L.latLng(bounds[3], bounds[2]);
+                              var southWest = L.latLng(bounds[1], bounds[0]);
+                              map.fitBounds(L.latLngBounds(southWest, northEast));
                               //map.fitBounds(markerClusterGroup.getBounds());
 
                                //layer.clearLayers();
@@ -403,9 +424,6 @@
                             crisisTreeMap[crisisID][clientId][category] = { "crisisLayer" : markerClusterGroup };
                           });
 
-                          var northEast = L.latLng(bounds[3], bounds[2]);
-                          var southWest = L.latLng(bounds[1], bounds[0]);
-                          map.fitBounds(L.latLngBounds(southWest, northEast));
                       },
                       error: function(response){
                         console.log("Unable to load map. Try again.");
@@ -553,10 +571,10 @@
                   var API = crisisType.toLowerCase() == "video" ? MicroMaps.config.API.replace("JSONP", "file") : MicroMaps.config.API;
                   $.ajax({
                       //url: "../data/" + crisisID + ".json",
-                      url: "../data/" + "260.json",
-                      //url: API + crisisType.toLowerCase() + "/id/" + clientId,
-                      //dataType: "jsonp",
-                      //jsonpCallback:"jsonp",
+                      //url: "../data/" + "260.json",
+                      url: API + crisisType.toLowerCase() + "/id/" + clientId,
+                      dataType: "jsonp",
+                      jsonpCallback:"jsonp",
                       success: function(response) {
                           if(response.features.length <= 0){
                               toastr.warning("<b>"+ crisisName + "</b><br/>" + crisisType + " clicker locations not Found.");
