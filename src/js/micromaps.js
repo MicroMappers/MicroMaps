@@ -295,7 +295,7 @@
                   var API = MicroMaps.config.API;
                   $.ajax({
                       //url: "../data/" + "2601.json",
-                      url: API + "geojson/id/" + clientId + "/createdDate/200", //+ processStartTime,
+                      url: API + "geojson/id/" + clientId + "/createdDate/" + processStartTime,
                       dataType: "jsonp",
                       jsonpCallback:"jsonp",
                       success: function(response) {
