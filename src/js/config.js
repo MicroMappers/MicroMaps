@@ -53,43 +53,6 @@
 		//"hideMethod": "fadeOut"
 	};
 
-	// $(function(){
-	// 	$.widget( "custom.catcomplete", $.ui.autocomplete, {
-	//         _create: function() {
-	//             this._super();
-	//             this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
-	//         },
-	//         _renderMenu: function( ul, items ) {
-	//             var that = this,
-	//             currentCategory = "";
-	//             $.each( items, function( index, item ) {
-	//                 // if ( item.category != currentCategory) {
-	//                 // 	var cat = item.category;
-	//                 // 	var icon = (cat == MicroMaps.config.text)?'mm mm-text':
-	//                 // 				(cat == MicroMaps.config.image)?'fa fa-image':
-	//                 // 				(cat == MicroMaps.config.video)?'fa fa-video-camera':
-	//                 // 				(cat == MicroMaps.config.aerial)?'fa fa-globe':
-	//                 // 				(cat == MicroMaps.config.threeW)?'fa mm-3w':'';
-	//                 //     ul.append( "<li class='ui-autocomplete-category'> <i class='"+icon+"'></i>" +
-	//                 //     			"<span class='pull-right'> " + cat + " Clicker</span></li>" );
-	//                 //     currentCategory = cat;
-	//                 // }
-	// 								ul.append( "<li>" + item.label + "</li>" );
-	//                 that._renderItem( ul, item );
-	//             });
-	//         },
-	//         _renderItem: function( ul, item ) {
-	//             var newText = String(item.value).replace(new RegExp(this.term, "gi"), "<span class='ui-autocomplete-suggestions'>$&</span>");
-	//             if (item.status == 'inactive'){
-	// 	            return $("<li></li>")
-	// 	                .data("item.autocomplete", item)
-	// 	                .append("<a>" + newText + "</a>")
-	// 	                .appendTo(ul);
-  //            }
-	//         }
-	//     });
-	// });
-
 /**
 * Check to evaluate whether 'MicroMaps' exists in the global namespace - if not, assign window.MicroMaps an object literal
 */

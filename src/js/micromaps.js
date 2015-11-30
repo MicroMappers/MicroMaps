@@ -231,38 +231,6 @@
                       $('#loading-widget').hide();
                     }
                 });
-
-                return;
-                // $('#loading-widget').show();
-                // var API = node.type.toLowerCase() == "video" ? MicroMaps.config.API.replace("JSONP", "file") : MicroMaps.config.API;
-                // $.ajax({
-                //     url: API + node.type.toLowerCase() + "/id/" + node.clientId,
-                //     dataType: "jsonp",
-                //     jsonpCallback:"jsonp",
-                //     success: function(response) {
-                //
-                //       var bounds = eval(crisisIdMap[node.crisisID][0].otherItem.bounds);
-                //       var updatedFeatures = [];
-                //       $.each(response.features, function( i, feature){
-                //         if(feature != null && feature.properties != null){
-                //            if(feature.geometry.coordinates[0] >= bounds[0] && feature.geometry.coordinates[0] <= bounds[2]
-                //              && feature.geometry.coordinates[1] >= bounds[1] && feature.geometry.coordinates[1] <= bounds[3]){
-                //                updatedFeatures.push(feature);
-                //           }
-                //         }
-                //       });
-                //       response.features = updatedFeatures;
-                //
-                //       var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent("/* QCRI */ \n\n\n\n"+JSON.stringify(response));
-                //     	 $('#downloadBtn').attr("href", dataStr);
-                //     	 $('#downloadBtn').attr("download", "geojson.json");
-                //        $("#downloadBtn")[0].click()
-                //        $('#loading-widget').hide();
-                //     },
-                //     error: function(response){
-                //       $('#loading-widget').hide();
-                //     }
-                // });
             }
 
             _this.downloadKML = function(node){
