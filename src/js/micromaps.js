@@ -596,7 +596,7 @@
                                       markerColor = feature.properties.style.markerColor;
                                     } else if(crisisType.toLowerCase() == "video"){
                                       layer.on("click", function (e) {
-                                        $("#uavVideo").attr('src', _this.getEmbedUrl(feature.properties.url));
+                                        $("#video-clicker-iframe").attr('src', _this.getEmbedUrl(feature.properties.url));
                                         window.location.href='#video-modal';
                                       });
 
