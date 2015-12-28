@@ -71,22 +71,27 @@
 
                 $.log("initializing Mapview");
 
-                map = L.map('map', {
-                    'zoomControl': false
-                });
+                // map = L.map('map', {
+                //     'zoomControl': false
+                // });
+                // map.addControl(L.control.zoom({position: 'bottomright'}));
+                // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                //     maxZoom: 18,
+                //     attribution: 'MicroMappers'
+                // }).addTo(map);
 
-                map.addControl(L.control.zoom({position: 'bottomright'}));
+
+
+                var accessToken = 'pk.eyJ1IjoidWF2aWF0b3JzIiwiYSI6IlpqZEx2UzgifQ.o6vACHfsO6CTk2yluUZwUA';
+                var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v4/uaviators.lln1n147/{z}/{x}/{y}.png?access_token=' + accessToken, {
+                    attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
+                });
+                map = L.map('map',{maxZoom: 20, maxNativeZoom: 20, layers: [mapboxTiles]});
+
 
                 map.setView(MicroMaps.config.MAP_CENTER, MicroMaps.config.MAP_DEFAULT_ZOOM);
-
                 //map.fitWorld();
-
-                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 18,
-                    attribution: 'MicroMappers'
-                }).addTo(map);
-
-                _this.markerClusterGroup = L.markerClusterGroup({animateAddingMarkers: true, maxClusterRadius: 1});
+                _this.markerClusterGroup = new L.markerClusterGroup({animateAddingMarkers: true, maxClusterRadius: 1});
 
                 sidebar = L.control.sidebar('sidebar').addTo(map);
 
@@ -175,6 +180,11 @@
                                 otherItem: item
                             };
                         });
+                        console.log(CrisisList);
+                        var vanuatuRealTime = {label: "vanuatu Real Time", category: "Aerial", status: 0, clientId: 1, otherItem: {crisisID: 1, type: 'Aerial', crisisID: 1}};
+
+                        CrisisList.push(vanuatuRealTime);
+
                         _this.populateMap(CrisisList);
                         _this.populateCrisis(crisisIdMap);
 
@@ -408,9 +418,6 @@
               var my_channel = socket.subscribe('micromaps');
               socket.bind('location_added',
                 function(data) {
-                  //toastr.info("Got Pusher event.");
-                  //console.log("Pusher Data");
-                  //console.log(data);
                   _this.addMarkersToLayer(data.clickerType, data.clientAppID, data.crisisID, data.crisisName, data.processStartTime)
                 }
               );
@@ -456,30 +463,32 @@
                     };
 
                     var labels = [];
-                    $.each(crisisClicker.otherItem.style.style, function( i, style){
-                      if(!style.markerColor){
-                        if(style.color){
-                          style.markerColor = style.color;
+                    if(crisisClicker.otherItem.style && crisisClicker.otherItem.style.style){
+                      $.each(crisisClicker.otherItem.style.style, function( i, style){
+                        if(!style.markerColor){
+                          if(style.color){
+                            style.markerColor = style.color;
+                          }
                         }
-                      }
-                      var a_attr = { "style" : "color: " + style.markerColor };
-                      if(crisisClicker.otherItem.type.toLowerCase() == "aerial" ){
-                        a_attr = { "style" : "color: " + style.markerColor + "; pointer-events: none; opacity: 0.6"};
-                      }
-                      var label = {
-                          "text" : style.label,
-                          "markerColor" : style.markerColor,
-                          "icon" : "fa fa-map-marker",
-                          "a_attr": a_attr,
-                          "labelCode" : style.label_code,
-                          "crisisID" : crisisClicker.otherItem.crisisID,
-                          "type" : crisisClicker.otherItem.type,
-                          "clientId" : crisisClicker.clientId,
-                          "crisisName" : crisisClicker.label,
-                          "level" : "label"
-                      }
-                      labels.push(label);
-                    });
+                        var a_attr = { "style" : "color: " + style.markerColor };
+                        if(crisisClicker.otherItem.type.toLowerCase() == "aerial" ){
+                          a_attr = { "style" : "color: " + style.markerColor + "; pointer-events: none; opacity: 0.6"};
+                        }
+                        var label = {
+                            "text" : style.label,
+                            "markerColor" : style.markerColor,
+                            "icon" : "fa fa-map-marker",
+                            "a_attr": a_attr,
+                            "labelCode" : style.label_code,
+                            "crisisID" : crisisClicker.otherItem.crisisID,
+                            "type" : crisisClicker.otherItem.type,
+                            "clientId" : crisisClicker.clientId,
+                            "crisisName" : crisisClicker.label,
+                            "level" : "label"
+                        }
+                        labels.push(label);
+                      });
+                    }
                     clicker.children = labels;
                     clickers.push(clicker);
                   });
@@ -535,8 +544,37 @@
             _this.loadLayer = function(data, crisisType, clientId, labelCode, crisisID, crisisName){
                 if(data.selected.indexOf(data.node.id) >= 0 && (crisisTreeMap[crisisID] == null || crisisTreeMap[crisisID][clientId] == null)){
                   $('#loading-widget').show();
-
                   var API = crisisType.toLowerCase() == "video" ? MicroMaps.config.API.replace("JSONP", "file") : MicroMaps.config.API;
+
+                  if(clientId == 1 || clientId == 2){
+                    var url = API + crisisType.toLowerCase() + "/id/" + clientId;
+                    if(clientId == 1){
+                      url = "json/lenakel-vanuatu-damage.json";
+                    } else if(clientId == 2){
+                      url = "json/vanuatu-uav-mapping-dmg-tagged-all.json";
+                    }
+                    $.ajax({
+                        url: url,
+                        success: function(response) {
+                          L.geoJson(response, {
+                            style: function(feature) {
+                                switch (feature.properties.damage) {
+                                                        case "destroyed": return {color:"#FF0000"}; //red
+                                                        case "damaged": return {color:"#FFA500"}; // orange
+                                                        default:return {color:"#0000FF"}; // blue
+                                }
+                            }}).addTo(map);
+
+                          if(clientId == 1){
+                            map.fitBounds([[-19.53444391651, 169.27070248399],[-19.529559291981833, 169.26481246948242]]);
+                            _this.loadLayer(data, crisisType, 2, labelCode, crisisID, crisisName);
+                          }
+                          $('#loading-widget').hide();
+                        }
+                      });
+                      return;
+                  }
+
                   $.ajax({
                       //url: "../data/" + crisisID + ".json",
                       //url: "../data/" + "260.json",
@@ -566,7 +604,6 @@
                               }
                             }
                           });
-                          //console.log("load: "+cnt);
 
                           $.each(geoJsonMap, function(category, features){
                             var geoJson = { "type" : "FeatureCollection", "features" : features};
@@ -645,19 +682,22 @@
                   });
                 } else {
                   if ( data.selected.indexOf(data.node.id) < 0){
+                    if(clientId == 1 || clientId == 2){
+                      map.defaultView();
+                      return;
+                    }
                     if(labelCode != null){
                       if(crisisTreeMap[crisisID][clientId][labelCode] != null){
                         var crisisLayer = crisisTreeMap[crisisID][clientId][labelCode].crisisLayer
                         map.removeLayer(crisisLayer);
-                        map.defaultView();
                       }
                     } else {
                       var crisisLayers = crisisTreeMap[crisisID][clientId]
                       $.each(crisisLayers, function(labelCode, data){
                         map.removeLayer(data.crisisLayer);
                       });
-                      map.defaultView();
                     }
+                    map.defaultView();
                   } else {
                     toastr.info("<b>"+ crisisName + "</b><br/>" + crisisType + " clicker locations Added to Map.");
                     if(labelCode != null){
