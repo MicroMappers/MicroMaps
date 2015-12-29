@@ -86,7 +86,7 @@
                 var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v4/uaviators.lln1n147/{z}/{x}/{y}.png?access_token=' + accessToken, {
                     attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
                 });
-                map = L.map('map',{maxZoom: 20, maxNativeZoom: 20, layers: [mapboxTiles]});
+                map = L.map('map',{maxZoom: 18, maxNativeZoom: 18, layers: [mapboxTiles]});
 
 
                 map.setView(MicroMaps.config.MAP_CENTER, MicroMaps.config.MAP_DEFAULT_ZOOM);
@@ -180,9 +180,8 @@
                                 otherItem: item
                             };
                         });
-                        console.log(CrisisList);
-                        var vanuatuRealTime = {label: "vanuatu Real Time", category: "Aerial", status: 0, clientId: 1, otherItem: {crisisID: 1, type: 'Aerial', crisisID: 1}};
 
+                        var vanuatuRealTime = {label: "Vanuatu Real Time", category: "Aerial", status: 0, clientId: 1, otherItem: {type: 'Aerial', crisisID: 3}};
                         CrisisList.push(vanuatuRealTime);
 
                         _this.populateMap(CrisisList);
@@ -226,11 +225,20 @@
                }
             }
 
+            _this.detailMap = function(node) {
+              window.open('https://api.mapbox.com/v4/uaviators.ogigbhbh/page.html?access_token=pk.eyJ1IjoidWF2aWF0b3JzIiwiYSI6IlpqZEx2UzgifQ.o6vACHfsO6CTk2yluUZwUA#17/-19.53226/169.26823', '_blank');
+            }
+
             _this.downloadGeoJson = function(node){
                 $('#loading-widget').show();
-                var API = MicroMaps.config.API;
+                var url = MicroMaps.config.API + "download/geojson/id/" + node.clientId;
+                if(node.id == '1') {
+                  $('#loading-widget').hide();
+                  window.open(MicroMaps.config.HOST + 'json/vanuatu_real_time.zip');
+                  return;
+                }
                 $.ajax({
-                    url: API + "download/geojson/id/" + node.clientId,
+                    url: url,
                     dataType: "jsonp",
                     jsonpCallback:"jsonp",
                     success: function(response) {
@@ -422,6 +430,40 @@
                 }
               );
 
+              var customMenu = function(node) {
+                var items = {
+                    "geojson": {
+                        "label": "Download Geojson",
+                        "icon" : "fa fa-download",
+                        "action" : function(obj){
+                          _this.downloadGeoJson(_this.downloadNode);
+                        }
+                    },
+                    "kml": {
+                        "label": "Download KML",
+                        "icon" : "fa fa-download",
+                        "action" : function(obj){
+                          _this.downloadKML(_this.downloadNode);
+                        }
+                    },
+                    "detail_map": {
+                        "label": "Detail Map",
+                        "icon" : "fa fa-share-square-o",
+                        "action" : function(obj){
+                          _this.detailMap(_this.downloadNode);
+                        }
+                    }
+                }
+
+                 if (node.id == '1') {
+                     delete items.kml;
+                 } else {
+                     delete items.detail_map;
+                 }
+
+                return items;
+            }
+
               var crisisTreeJson = {
                   "plugins" : ["checkbox", "sort", "contextmenu"],
                   'core' : {
@@ -433,22 +475,7 @@
                       'data' : []
                   },
                   "contextmenu": {
-                      "items": {
-                          "geojson": {
-                              "label": "Download Geojson",
-                              "icon" : "fa fa-download",
-                              "action" : function(obj){
-                                _this.downloadGeoJson(_this.downloadNode);
-                              }
-                          },
-                          "kml": {
-                              "label": "Download KML",
-                              "icon" : "fa fa-download",
-                              "action" : function(obj){
-                                _this.downloadKML(_this.downloadNode);
-                              }
-                          }
-                      }
+                      'items' : customMenu
                   }
               }
 
@@ -546,30 +573,22 @@
                   $('#loading-widget').show();
                   var API = crisisType.toLowerCase() == "video" ? MicroMaps.config.API.replace("JSONP", "file") : MicroMaps.config.API;
 
-                  if(clientId == 1 || clientId == 2){
-                    var url = API + crisisType.toLowerCase() + "/id/" + clientId;
-                    if(clientId == 1){
-                      url = "json/lenakel-vanuatu-damage.json";
-                    } else if(clientId == 2){
-                      url = "json/vanuatu-uav-mapping-dmg-tagged-all.json";
-                    }
+                  if(clientId == 1){
+                    var url = "json/vanuatu_real_time.json";
                     $.ajax({
                         url: url,
                         success: function(response) {
                           L.geoJson(response, {
                             style: function(feature) {
                                 switch (feature.properties.damage) {
-                                                        case "destroyed": return {color:"#FF0000"}; //red
-                                                        case "damaged": return {color:"#FFA500"}; // orange
-                                                        default:return {color:"#0000FF"}; // blue
+                                    case "destroyed": return {color:"#FF0000"}; //red
+                                    case "damaged": return {color:"#FFA500"}; // orange
+                                    default:return {color:"#0000FF"}; // blue
                                 }
                             }}).addTo(map);
-
-                          if(clientId == 1){
                             map.fitBounds([[-19.53444391651, 169.27070248399],[-19.529559291981833, 169.26481246948242]]);
-                            _this.loadLayer(data, crisisType, 2, labelCode, crisisID, crisisName);
-                          }
-                          $('#loading-widget').hide();
+                            toastr.info("<b>"+ crisisName + "</b><br/>" + crisisType + " clicker locations Added to Map.");
+                            $('#loading-widget').hide();
                         }
                       });
                       return;
@@ -682,7 +701,7 @@
                   });
                 } else {
                   if ( data.selected.indexOf(data.node.id) < 0){
-                    if(clientId == 1 || clientId == 2){
+                    if(clientId == 1){
                       map.defaultView();
                       return;
                     }
